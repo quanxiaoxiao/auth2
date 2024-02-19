@@ -1,0 +1,34 @@
+import process from 'node:process';
+import path from 'node:path';
+import * as dotenv from 'dotenv';
+import { select } from '@quanxiaoxiao/datav';
+import { getCurrentDateTime } from '@quanxiaoxiao/utils';
+
+dotenv.config();
+
+const initialState = {
+  dateTimeCreate: getCurrentDateTime(),
+  server: {
+    port: select({ type: 'integer' })(process.env.SERVER_PORT),
+  },
+  configPathnames: {
+    state: path.resolve(process.cwd(), '.state.json'),
+  },
+  cipher: {
+    secret: process.env.CIPHER_SECRET,
+    key: process.env.CIPHER_KEY,
+    iv: process.env.CIPHER_IV,
+    algorithm: process.env.CIPHER_ALGORITHM,
+  },
+  mongo: {
+    connect: false,
+    dateTimeConnect: null,
+    hostname: process.env.MONGO_HOSTNAME || '127.0.0.1',
+    port: select({ type: 'integer' })(process.env.MONGO_PORT),
+    database: process.env.MONGO_DATABASE,
+    username: process.env.MONGO_USERNAME,
+    password: process.env.MONGO_PASSWORD,
+  },
+};
+
+export default initialState;
