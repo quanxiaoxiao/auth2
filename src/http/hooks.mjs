@@ -2,7 +2,6 @@ import createError from 'http-errors';
 import { selectRouteMatchList } from '../store/selector.mjs';
 
 export default {
-  onHttpRequest: () => {},
   onHttpRequestStartLine: (ctx) => {
     const routeMatchList = selectRouteMatchList();
     const routeMatched = routeMatchList.find((routeItem) => routeItem.urlMatch(ctx.request.pathname));
@@ -16,7 +15,7 @@ export default {
     if (!requestHandler) {
       throw createError(405);
     }
-    ctx.request.params = ctx.routeMatched.urlMatch(ctx.request.pathname);
+    ctx.request.params = ctx.routeMatched.urlMatch(ctx.request.pathname).params;
     if (ctx.routeMatched.query) {
       ctx.request.query = ctx.routeMatched.query(ctx.request.query);
     }
