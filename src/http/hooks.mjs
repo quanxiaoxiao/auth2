@@ -1,71 +1,37 @@
 import createError from 'http-errors';
-import { filterRoutesOfPathname } from '@quanxiaoxiao/http-router';
 import { selectRouteMatchList } from '../store/selector.mjs';
-
-const getRequestHandler = (routeList, request) => {
-  const method = request.method.toLowerCase();
-  for (let i = 0; i < routeList.length; i++) {
-    const routeItem = routeList[i];
-    const fn = routeItem[method];
-    if (typeof fn !== 'function') {
-      continue;
-    }
-    const pathnameMatched = routeItem.urlMatch(request.pathname);
-    if (!pathnameMatched) {
-      continue;
-    }
-    const { params } = pathnameMatched;
-    const query = routeItem.query ? routeItem.query(request.query) : request.query;
-    if (!routeItem.match) {
-      return {
-        params,
-        query,
-        handler: fn,
-        select: routeItem.select,
-        onPre: routeItem.onPre,
-      };
-    }
-    if (routeItem.match({
-      ...request,
-      params,
-      query,
-    })) {
-      return {
-        params,
-        query,
-        handler: fn,
-        select: routeItem.select,
-        onPre: routeItem.onPre,
-      };
-    }
-  }
-  return null;
-};
 
 export default {
   onHttpRequest: () => {},
   onHttpRequestStartLine: (ctx) => {
     const routeMatchList = selectRouteMatchList();
-    const routeMatchedList = filterRoutesOfPathname(routeMatchList, ctx.request.pathname);
-    if (routeMatchedList.length === 0) {
+    const routeMatched = routeMatchList.find((routeItem) => routeItem.urlMatch(ctx.request.pathname));
+    if (!routeMatched) {
       throw createError(404);
     }
-    ctx.routeMatchedList = routeMatchedList;
+    ctx.routeMatched = routeMatched;
   },
   onHttpRequestHeader: async (ctx) => {
-    const requestHandler = getRequestHandler(ctx.routeMatchedList, ctx.request);
+    const requestHandler = ctx.routeMatched[ctx.request.method.toLowerCase()];
     if (!requestHandler) {
       throw createError(405);
     }
-    ctx.request.params = requestHandler.params;
-    ctx.request.query = requestHandler.query;
-    if (requestHandler.onPre) {
-      await requestHandler.onPre(ctx);
+    ctx.request.params = ctx.routeMatched.urlMatch(ctx.request.pathname);
+    if (ctx.routeMatched.query) {
+      ctx.request.query = ctx.routeMatched.query(ctx.request.query);
     }
-    ctx.onRequest = requestHandler.handler;
-    if (requestHandler.select) {
+    if (ctx.routeMatched.match) {
+      if (!ctx.routeMatched.match(ctx.request)) {
+        throw createError(400);
+      }
+    }
+    if (ctx.routeMatched.onPre) {
+      await ctx.routeMatched.onPre(ctx);
+    }
+    ctx.onRequest = requestHandler;
+    if (ctx.routeMatched.select) {
       ctx.onResponse = (_ctx) => {
-        _ctx.response.data = requestHandler.select(_ctx.response.data);
+        _ctx.response.data = ctx.routeMatched.select(_ctx.response.data);
       };
     }
   },
