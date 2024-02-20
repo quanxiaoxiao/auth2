@@ -89,18 +89,12 @@ export default {
       },
     },
     match: {
-      'query.order': {
-        $in: [-1, 1],
-      },
+      'query.order': { $in: [-1, 1] },
       'query.orderBy': {
         $in: ['type', 'timeCreate', 'timeExpired'],
       },
-      'query.limit': {
-        $gt: 0,
-      },
-      'query.skip': {
-        $gte: 0,
-      },
+      'query.limit': { $gt: 0 },
+      'query.skip': { $gte: 0 },
     },
     get: async (ctx) => {
       const accountList = await queryAccounts(ctx.request.query);
