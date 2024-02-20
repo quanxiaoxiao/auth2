@@ -20,6 +20,10 @@ const initialState = {
     iv: process.env.CIPHER_IV,
     algorithm: process.env.CIPHER_ALGORITHM,
   },
+  session: {
+    key: process.env.SESSION_KEY,
+    authKey: process.env.SESSION_AUTH_KEY,
+  },
   mongo: {
     connect: false,
     dateTimeConnect: null,
@@ -29,6 +33,7 @@ const initialState = {
     username: process.env.MONGO_USERNAME,
     password: process.env.MONGO_PASSWORD,
   },
+  routeMatchList: [],
 };
 
 export default initialState;

@@ -49,6 +49,7 @@ export default new Schema({
   },
   timeCreate: {
     type: Number,
+    index: true,
     default: Date.now,
   },
   info: {
