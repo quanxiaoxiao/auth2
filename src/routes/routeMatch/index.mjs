@@ -4,6 +4,7 @@ import queryRouteMatches from './queryRouteMatches.mjs';
 import createRouteMatch from './createRouteMatch.mjs';
 import findRouteMatch from './findRouteMatch.mjs';
 import updateRouteMatch from './updateRouteMatch.mjs';
+import removeRouteMatch from './removeRouteMatch.mjs';
 
 export default {
   '/authapi/routematches': {
@@ -106,6 +107,12 @@ export default {
           data: routeMatchItem,
         };
       },
+    },
+    delete: async (ctx) => {
+      await removeRouteMatch(ctx.routeMatchItem);
+      ctx.response = {
+        data: ctx.routeMatchItem,
+      };
     },
   },
 };
