@@ -1,4 +1,6 @@
 import process from 'node:process';
+import assert from 'node:assert';
+import Ajv from 'ajv';
 import shelljs from 'shelljs';
 import { select } from '@quanxiaoxiao/datav';
 import { generateRouteList } from '@quanxiaoxiao/http-router';
@@ -49,8 +51,23 @@ process.nextTick(() => {
     const methodList = ['get', 'post', 'put', 'delete'];
     for (let i = 0; i < methodList.length; i++) {
       const method = methodList[i];
-      if (d[method]) {
-        routeItem[method] = d[method];
+      const handler = d[method];
+      if (handler) {
+        if (typeof handler === 'function') {
+          routeItem[method.toUpperCase()] = {
+            fn: handler,
+          };
+        } else {
+          assert(typeof handler.fn === 'function');
+          routeItem[method.toUpperCase()] = {
+            fn: handler.fn,
+          };
+          if (handler.validate) {
+            const ajv = new Ajv();
+            routeItem[method.toUpperCase()].validate = ajv.compile(handler.validate);
+            routeItem[method.toUpperCase()].validate.toJSON = () => handler.validate;
+          }
+        }
       }
     }
     return routeItem;

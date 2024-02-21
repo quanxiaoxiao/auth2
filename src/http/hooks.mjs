@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { selectRouteMatchList } from '../store/selector.mjs';
 
 export default {
@@ -11,7 +12,7 @@ export default {
     ctx.routeMatched = routeMatched;
   },
   onHttpRequestHeader: async (ctx) => {
-    const requestHandler = ctx.routeMatched[ctx.request.method.toLowerCase()];
+    const requestHandler = ctx.routeMatched[ctx.request.method];
     if (!requestHandler) {
       throw createError(405);
     }
@@ -27,7 +28,18 @@ export default {
     if (ctx.routeMatched.onPre) {
       await ctx.routeMatched.onPre(ctx);
     }
-    ctx.onRequest = requestHandler;
+    if (['PUT', 'POST'].includes(ctx.request.method)) {
+      ctx.onRequest = async (_ctx) => {
+        const data = decodeContentToJSON(ctx.request.body, _ctx.request.headers);
+        if (requestHandler.validate && !requestHandler.validate(data)) {
+          throw createError(400, JSON.stringify(requestHandler.validate.errors));
+        }
+        _ctx.request.data = data;
+        await requestHandler.fn(_ctx);
+      };
+    } else {
+      ctx.onRequest = requestHandler.fn;
+    }
     if (ctx.routeMatched.select) {
       ctx.onResponse = (_ctx) => {
         _ctx.response.data = ctx.routeMatched.select(_ctx.response.data);
