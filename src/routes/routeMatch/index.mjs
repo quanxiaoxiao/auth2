@@ -43,6 +43,7 @@ export default {
           },
         },
         required: ['path', 'value'],
+        additionalProperties: false,
       },
       fn: async (ctx) => {
         const routeMatchItem = await createRouteMatch(ctx.request.data);
