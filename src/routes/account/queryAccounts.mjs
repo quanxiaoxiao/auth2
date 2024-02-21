@@ -5,7 +5,7 @@ import {
   Account as AccountModel,
   RouteMatchGroup as RouteMatchGroupModel,
 } from '../../models/index.mjs';
-import matchRoute from '../routeMatch/matchRoute.mjs';
+import getRouteMatchesByPath from '../routeMatch/getRouteMatchesByPath.mjs';
 
 export default async ({
   keywords,
@@ -21,7 +21,7 @@ export default async ({
   };
   if (keywords) {
     if (keywords[0] === '/') {
-      const routeMatchList = await matchRoute(keywords);
+      const routeMatchList = await getRouteMatchesByPath(keywords);
       if (_.isEmpty(routeMatchList)) {
         return [];
       }
