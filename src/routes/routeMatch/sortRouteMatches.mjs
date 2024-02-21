@@ -11,6 +11,9 @@ export default async (input) => {
   if (len !== routeMatchList.length) {
     throw createError(400);
   }
+  if (len !== Array.from(new Set(input)).length) {
+    throw createError(400);
+  }
   const updates = [];
   for (let i = 0; i < len; i++) {
     const routeMatch = input[i];
