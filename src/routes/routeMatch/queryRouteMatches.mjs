@@ -5,11 +5,15 @@ import {
 
 export default async (args) => {
   const query = getQuery(args);
+  query.invalid = {
+    $ne: true,
+  };
   const routeMatchList = await RouteMatchModel
     .find(query)
     .sort({
       order: -1,
       timeCreate: 1,
-    });
+    })
+    .lean();
   return routeMatchList;
 };

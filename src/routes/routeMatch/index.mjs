@@ -5,6 +5,7 @@ import createRouteMatch from './createRouteMatch.mjs';
 import findRouteMatch from './findRouteMatch.mjs';
 import updateRouteMatch from './updateRouteMatch.mjs';
 import removeRouteMatch from './removeRouteMatch.mjs';
+import sortRouteMatches from './sortRouteMatches.mjs';
 
 export default {
   '/authapi/routematches': {
@@ -17,6 +18,27 @@ export default {
       ctx.response = {
         data: routeMatchList,
       };
+    },
+  },
+  '/authapi/routematches/sort': {
+    select: {
+      type: 'array',
+      properties: ['_id', { type: 'string' }],
+    },
+    put: {
+      validate: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        minItems: 1,
+      },
+      fn: async (ctx) => {
+        const routeMatchList = await sortRouteMatches(ctx.request.data);
+        ctx.response = {
+          data: routeMatchList,
+        };
+      },
     },
   },
   '/authapi/routematch': {
