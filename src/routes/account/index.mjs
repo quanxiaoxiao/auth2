@@ -1,6 +1,8 @@
+import createError from 'http-errors';
 import getAccounts from './getAccounts.mjs';
 import accountType from '../../types/account.mjs';
 import queryAccounts from './queryAccounts.mjs';
+import findAccountByUsername from './findAccountByUsername.mjs';
 
 export default {
   '/api/accounts': {
@@ -100,6 +102,40 @@ export default {
       const accountList = await queryAccounts(ctx.request.query);
       ctx.response = {
         data: accountList,
+      };
+    },
+  },
+  '/authapi/account': {
+    select: {
+      type: 'object',
+      properties: accountType,
+    },
+    query: {
+      type: 'object',
+      properties: {
+        username: {
+          type: 'string',
+          resolve: (v) => {
+            if (!v) {
+              return '';
+            }
+            return v.trim();
+          },
+        },
+      },
+    },
+    match: {
+      'query.username': {
+        $nin: [null, ''],
+      },
+    },
+    get: async (ctx) => {
+      const accountItem = await findAccountByUsername(ctx.request.query.username);
+      if (!accountItem) {
+        throw createError(404);
+      }
+      ctx.response = {
+        data: accountItem,
       };
     },
   },
