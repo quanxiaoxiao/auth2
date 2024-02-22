@@ -5,6 +5,7 @@ import createRouteMatchGroup from './createRouteMatchGroup.mjs';
 import findRouteMatchGroup from './findRouteMatchGroup.mjs';
 import updateRouteMatchGroup from './updateRouteMatchGroup.mjs';
 import removeRouteMatchGroup from './removeRouteMatchGroup.mjs';
+import sortRouteMatchGroups from './sortRouteMatchGroups.mjs';
 
 export default {
   '/authapi/routematchgroups': {
@@ -17,6 +18,27 @@ export default {
       ctx.response = {
         data: routematchgroupList,
       };
+    },
+  },
+  '/authapi/routematchgroups/sort': {
+    select: {
+      type: 'array',
+      properties: ['_id', { type: 'string' }],
+    },
+    put: {
+      validate: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        minItems: 1,
+      },
+      fn: async (ctx) => {
+        const routeMatchGroupList = await sortRouteMatchGroups(ctx.request.data);
+        ctx.response = {
+          data: routeMatchGroupList,
+        };
+      },
     },
   },
   '/authapi/routematchgroup': {
