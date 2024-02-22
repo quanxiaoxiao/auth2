@@ -26,7 +26,7 @@
     "@quanxiaoxiao/http-router": "^0.1.0",
     "@quanxiaoxiao/http-utils": "^0.1.0",
     "@quanxiaoxiao/httttp": "^0.3.0",
-    "@quanxiaoxiao/mongo": "^0.0.4",
+    "@quanxiaoxiao/mongo": "^0.1.0",
     "@quanxiaoxiao/store": "^0.1.0",
     "@quanxiaoxiao/utils": "^0.2.1",
     "ajv": "^8.12.0",

@@ -6,7 +6,7 @@ export default async (username) => {
     {
       $match: {
         invalid: {
-          $ne: null,
+          $ne: true,
         },
         username,
       },

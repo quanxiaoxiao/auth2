@@ -1,14 +1,14 @@
 import createError from 'http-errors';
 import _ from 'lodash';
 import { isValidUniqueObjectIds } from '@quanxiaoxiao/mongo';
-import { RouteMatch as RouteMatchModel } from '../../models/index.mjs';
+import { RouteMatchGroup as RouteMatchGroupModel } from '../../models/index.mjs';
 
 export default async (arr) => {
   if (!_.isEmpty(arr)) {
     if (!isValidUniqueObjectIds(arr)) {
-      throw createError(400, 'routeMatches invalid');
+      throw createError(400, 'routeMatchGroups invalid');
     }
-    const count = await RouteMatchModel.countDocuments({
+    const count = await RouteMatchGroupModel.countDocuments({
       invalid: {
         $ne: true,
       },
@@ -17,7 +17,7 @@ export default async (arr) => {
       },
     });
     if (count !== arr.length) {
-      throw createError(400, 'routeMatches invalid');
+      throw createError(400, 'routeMatchGroups invalid');
     }
   }
 };

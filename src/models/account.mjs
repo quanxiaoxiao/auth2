@@ -18,6 +18,9 @@ export default new Schema({
   avatar: {
     type: String,
   },
+  info: {
+    type: String,
+  },
   routeMatchGroups: [{
     type: Schema.Types.ObjectId,
     ref: 'RouteMatchGroup',
@@ -51,10 +54,6 @@ export default new Schema({
     type: Number,
     index: true,
     default: Date.now,
-  },
-  info: {
-    type: String,
-    default: '',
   },
   invalid: {
     type: Boolean,
