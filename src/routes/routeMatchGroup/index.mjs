@@ -4,6 +4,7 @@ import queryRouteMatchGroups from './queryRouteMatchGroups.mjs';
 import createRouteMatchGroup from './createRouteMatchGroup.mjs';
 import findRouteMatchGroup from './findRouteMatchGroup.mjs';
 import updateRouteMatchGroup from './updateRouteMatchGroup.mjs';
+import removeRouteMatchGroup from './removeRouteMatchGroup.mjs';
 
 export default {
   '/authapi/routematchgroups': {
@@ -75,7 +76,11 @@ export default {
         data: ctx.routeMatchGroupItem,
       };
     },
-    delete: () => {
+    delete: async (ctx) => {
+      await removeRouteMatchGroup(ctx.routeMatchGroupItem);
+      ctx.response = {
+        data: ctx.routeMatchGroupItem,
+      };
     },
     put: {
       validate: {
