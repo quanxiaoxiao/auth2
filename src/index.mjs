@@ -1,6 +1,7 @@
 import process from 'node:process';
 import assert from 'node:assert';
 import Ajv from 'ajv';
+import _ from 'lodash';
 import shelljs from 'shelljs';
 import { select } from '@quanxiaoxiao/datav';
 import { generateRouteList } from '@quanxiaoxiao/http-router';
@@ -41,8 +42,11 @@ process.nextTick(() => {
       routeItem.select = select(d.select);
       routeItem.select.toJSON = () => d.select;
     }
-    if (d.query) {
-      routeItem.query = select(d.query);
+    if (!_.isEmpty(d.query)) {
+      routeItem.query = select({
+        type: 'object',
+        properties: d.query,
+      });
       routeItem.query.toJSON = () => d.query;
     }
     if (d.onPre) {

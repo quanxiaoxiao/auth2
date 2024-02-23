@@ -6,6 +6,7 @@ import checkSession from './checkSession.mjs';
 import getSessionByRequest from './getSessionByRequest.mjs';
 import removeSession from './removeSession.mjs';
 import updateSession from './updateSession.mjs';
+import querySessions from './querySessions.mjs';
 
 export default {
   '/api/session': {
@@ -66,6 +67,90 @@ export default {
           data: sessionItem,
         };
       },
+    },
+  },
+  '/authapi/sessions': {
+    select: {
+      type: 'object',
+      properties: {
+        count: {
+          type: 'integer',
+        },
+        list: {
+          type: 'array',
+          properties: sessionType,
+        },
+      },
+    },
+    query: {
+      order: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return -1;
+          }
+          return v;
+        },
+      },
+      orderBy: {
+        type: 'string',
+        resolve: (v) => {
+          if (!v) {
+            return 'timeCreate';
+          }
+          return v;
+        },
+      },
+      limit: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return 30;
+          }
+          return v;
+        },
+      },
+      skip: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return 0;
+          }
+          return v;
+        },
+      },
+      account: {
+        type: 'string',
+      },
+      timeCreateStart: {
+        type: 'number',
+      },
+      timeCreateEnd: {
+        type: 'number',
+      },
+      type: {
+        type: 'integer',
+      },
+      keywords: {
+        type: 'string',
+      },
+    },
+    match: {
+      'query.order': { $in: [-1, 1] },
+      'query.orderBy': {
+        $in: ['type', 'timeCreate', 'timeExpired', 'account'],
+      },
+      'query.limit': { $gt: 0 },
+      'query.skip': { $gte: 0 },
+    },
+    get: async (ctx) => {
+      const ret = await querySessions(ctx.request.query);
+      ctx.response = {
+        data: {
+          count: ret.count,
+          list: ret.list,
+        },
+      };
     },
   },
   '/authapi/session/:_id': {

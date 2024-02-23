@@ -8,14 +8,14 @@ export default {
   type: {
     type: 'integer',
   },
-  token: {
+  token: ['.', {
     type: 'string',
-    resolve: (a, d) => encodeSession({
+    resolve: (d) => encodeSession({
       timeExpired: d.timeExpired,
       session: d._id,
       type: d.type,
     }),
-  },
+  }],
   account: {
     type: 'object',
     properties: account,

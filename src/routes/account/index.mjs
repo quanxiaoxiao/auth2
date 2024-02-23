@@ -41,16 +41,13 @@ export default {
       },
     },
     query: {
-      type: 'object',
-      properties: {
-        username: {
-          type: 'string',
-          resolve: (v) => {
-            if (!v) {
-              return '';
-            }
-            return v.trim();
-          },
+      username: {
+        type: 'string',
+        resolve: (v) => {
+          if (!v) {
+            return '';
+          }
+          return v.trim();
         },
       },
     },
@@ -141,55 +138,52 @@ export default {
       },
     },
     query: {
-      type: 'object',
-      properties: {
-        type: {
-          type: 'integer',
+      type: {
+        type: 'integer',
+      },
+      order: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return -1;
+          }
+          return v;
         },
-        order: {
-          type: 'integer',
-          resolve: (v) => {
-            if (!v) {
-              return -1;
-            }
-            return v;
-          },
+      },
+      orderBy: {
+        type: 'string',
+        resolve: (v) => {
+          if (!v) {
+            return 'timeCreate';
+          }
+          return v;
         },
-        orderBy: {
-          type: 'string',
-          resolve: (v) => {
-            if (!v) {
-              return 'timeCreate';
-            }
-            return v;
-          },
+      },
+      timeCreateStart: {
+        type: 'number',
+      },
+      timeCreateEnd: {
+        type: 'number',
+      },
+      keywords: {
+        type: 'string',
+      },
+      limit: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return 30;
+          }
+          return v;
         },
-        timeCreateStart: {
-          type: 'number',
-        },
-        timeCreateEnd: {
-          type: 'number',
-        },
-        keywords: {
-          type: 'string',
-        },
-        limit: {
-          type: 'integer',
-          resolve: (v) => {
-            if (!v) {
-              return 30;
-            }
-            return v;
-          },
-        },
-        skip: {
-          type: 'integer',
-          resolve: (v) => {
-            if (!v) {
-              return 0;
-            }
-            return v;
-          },
+      },
+      skip: {
+        type: 'integer',
+        resolve: (v) => {
+          if (!v) {
+            return 0;
+          }
+          return v;
         },
       },
     },
