@@ -194,13 +194,14 @@ const testAccountSessionsAllInvalid = async (account) => {
 
 const pipeline = async (username) => {
   console.log(`will create account \`${username}\``);
+  const password = '123';
+  const newPassword = '456';
   const accountMatched = await getAccountByUsername(username);
   if (accountMatched) {
     console.log(`\`${username}\` already exit will remove`);
     const data = await removeAccount(accountMatched._id);
     assert(data);
   }
-  const password = '123';
   const accountItem = await createAccount({
     username,
     password,
@@ -250,6 +251,27 @@ const pipeline = async (username) => {
     password,
   });
 
+  await updateAccount({
+    account: accountItem._id,
+    data: {
+      password: newPassword,
+    },
+  });
+
+  await testAccountSessionsAllInvalid(accountItem._id);
+
+  const sessionEmpty = await createSession({
+    username,
+    password,
+  });
+
+  assert(sessionEmpty === null);
+
+  await testSessionCreate({
+    username,
+    password: newPassword,
+  });
+
   await testAccountRemove({
     account: accountItem._id,
     username,
@@ -257,10 +279,8 @@ const pipeline = async (username) => {
 
   await testSessionUnableCreate({
     username,
-    password,
+    password: newPassword,
   });
-
-  console.log(8888);
 };
 
 await pipeline('test_2');

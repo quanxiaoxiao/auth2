@@ -2,7 +2,7 @@ import createError from 'http-errors';
 import sessionType from '../../types/session.mjs';
 import findSession from './findSession.mjs';
 import createSessionByUsernameAndPassword from './createSessionByUsernameAndPassword.mjs';
-import checkSession from './checkSession.mjs';
+import checkSessionValid from './checkSessionValid.mjs';
 import getSessionByRequest from './getSessionByRequest.mjs';
 import removeSession from './removeSession.mjs';
 import updateSession from './updateSession.mjs';
@@ -24,7 +24,7 @@ export default {
         if (!sessionItem || !sessionItem.account) {
           throw createError(404);
         }
-        checkSession(sessionItem);
+        checkSessionValid(sessionItem);
         ctx.sessionItem = sessionItem;
       }
     },

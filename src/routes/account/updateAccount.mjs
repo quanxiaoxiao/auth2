@@ -4,6 +4,7 @@ import {
   Account as AccountModel,
   Session as SessionModel,
 } from '../../models/index.mjs';
+import checkRouteMatchGroups from './checkRouteMatchGroups.mjs';
 
 export default async (accountItem, input) => {
   const now = Date.now();
@@ -21,6 +22,10 @@ export default async (accountItem, input) => {
   if (data.password) {
     data.password = hmac(data.password);
     data.timeUpdateWithPassword = now;
+  }
+
+  if (data.routeMatchGroups) {
+    await checkRouteMatchGroups(data.routeMatchGroups);
   }
 
   const accountItemNext = await AccountModel.findOneAndUpdate(
