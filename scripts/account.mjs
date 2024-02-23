@@ -33,9 +33,9 @@ const createAccount = async ({
   return null;
 };
 
-const updateAccountTimeExpred = async ({
+const updateAccount = async ({
   account,
-  timeExpired,
+  data,
 }) => {
   const requestRet = await http.httpRequest({
     hostname: '127.0.0.1',
@@ -46,7 +46,7 @@ const updateAccountTimeExpred = async ({
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      timeExpired,
+      ...data,
     }),
   });
   assert(requestRet.statusCode === 200);
@@ -222,9 +222,11 @@ const pipeline = async (username) => {
     password,
   });
 
-  await updateAccountTimeExpred({
+  await updateAccount({
     account: accountItem._id,
-    timeExpired: dayjs().subtract(1, 'day').valueOf(),
+    data: {
+      timeExpired: dayjs().subtract(1, 'day').valueOf(),
+    },
   });
 
   await testAccountSessionsExpired(accountItem._id);
@@ -236,9 +238,11 @@ const pipeline = async (username) => {
     password,
   });
 
-  await updateAccountTimeExpred({
+  await updateAccount({
     account: accountItem._id,
-    timeExpired: dayjs().add(2, 'day').valueOf(),
+    data: {
+      timeExpired: dayjs().add(2, 'day').valueOf(),
+    },
   });
 
   await testSessionCreate({
