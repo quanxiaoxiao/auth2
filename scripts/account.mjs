@@ -76,7 +76,7 @@ const createSession = async ({
   return null;
 };
 
-const checkSessionValid = async (token) => {
+const getSessionValid = async (token) => {
   const requestRet = await http.httpRequest({
     hostname: '127.0.0.1',
     port,
@@ -147,7 +147,7 @@ const testSessionCreate = async ({
   });
   assert(sessionItem);
   console.log(`\`${username}\` will check session valid`);
-  const sessionValid = await checkSessionValid(sessionItem.token);
+  const sessionValid = await getSessionValid(sessionItem.token);
   assert(sessionValid);
 };
 
@@ -182,6 +182,16 @@ const testAccountSessionsExpired = async (account) => {
   assert(sessionList.every((d) => d.timeExpired < now));
 };
 
+const testAccountSessionsAllInvalid = async (account) => {
+  const sessionList = await getAccountSessions(account);
+  assert(sessionList.length > 0);
+  await sessionList.reduce(async (acc, cur) => {
+    await acc;
+    const ret = await getSessionValid(cur.token);
+    assert(!ret);
+  }, Promise.resolve);
+};
+
 const pipeline = async (username) => {
   console.log(`will create account \`${username}\``);
   const accountMatched = await getAccountByUsername(username);
@@ -202,12 +212,24 @@ const pipeline = async (username) => {
     password,
   });
 
+  await testSessionCreate({
+    username,
+    password,
+  });
+
+  await testSessionCreate({
+    username,
+    password,
+  });
+
   await updateAccountTimeExpred({
     account: accountItem._id,
     timeExpired: dayjs().subtract(1, 'day').valueOf(),
   });
 
   await testAccountSessionsExpired(accountItem._id);
+
+  await testAccountSessionsAllInvalid(accountItem._id);
 
   await testSessionUnableCreate({
     username,
