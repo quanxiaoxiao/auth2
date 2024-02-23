@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import dayjs from 'dayjs';
 import { http } from '@quanxiaoxiao/about-net';
 import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
@@ -30,6 +31,25 @@ const createAccount = async ({
     return data;
   }
   return null;
+};
+
+const updateAccountTimeExpred = async ({
+  account,
+  timeExpired,
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname: '127.0.0.1',
+    port,
+    method: 'PUT',
+    path: `/authapi/account/${account}`,
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      timeExpired,
+    }),
+  });
+  assert(requestRet.statusCode === 200);
 };
 
 const createSession = async ({
@@ -103,7 +123,7 @@ const removeAccount = async (account) => {
   return null;
 };
 
-const getAccountSessionCount = async (account) => {
+const getAccountSessions = async (account) => {
   const requestRet = await http.httpRequest({
     hostname: '127.0.0.1',
     port,
@@ -113,7 +133,7 @@ const getAccountSessionCount = async (account) => {
   });
   assert(requestRet.statusCode === 200);
   const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
-  return data.count;
+  return data.list;
 };
 
 const testSessionCreate = async ({
@@ -146,18 +166,20 @@ const testSessionUnableCreate = async ({
 const testAccountRemove = async ({
   account,
   username,
-  password,
 }) => {
   console.log(`\`${username}\` will remove account`);
   const accountItem = await removeAccount(account);
   assert(accountItem);
   console.log(`\`${username}\` remove account success`);
-  await testSessionUnableCreate({
-    username,
-    password,
-  });
-  const sessionCount = await getAccountSessionCount(accountItem._id);
-  assert(sessionCount === 0);
+  const sessionList = await getAccountSessions(accountItem._id);
+  assert(sessionList.length === 0);
+};
+
+const testAccountSessionsExpired = async (account) => {
+  const sessionList = await getAccountSessions(account);
+  const now = Date.now();
+  assert(sessionList.length > 0);
+  assert(sessionList.every((d) => d.timeExpired < now));
 };
 
 const pipeline = async (username) => {
@@ -180,11 +202,38 @@ const pipeline = async (username) => {
     password,
   });
 
-  await testAccountRemove({
+  await updateAccountTimeExpred({
     account: accountItem._id,
+    timeExpired: dayjs().subtract(1, 'day').valueOf(),
+  });
+
+  await testAccountSessionsExpired(accountItem._id);
+
+  await testSessionUnableCreate({
     username,
     password,
   });
+
+  await updateAccountTimeExpred({
+    account: accountItem._id,
+    timeExpired: dayjs().add(2, 'day').valueOf(),
+  });
+
+  await testSessionCreate({
+    username,
+    password,
+  });
+
+  await testAccountRemove({
+    account: accountItem._id,
+    username,
+  });
+
+  await testSessionUnableCreate({
+    username,
+    password,
+  });
+
   console.log(8888);
 };
 
