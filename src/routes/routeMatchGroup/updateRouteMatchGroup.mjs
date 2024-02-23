@@ -1,6 +1,6 @@
 import createError from 'http-errors';
 import { RouteMatchGroup as RouteMatchGroupModel } from '../../models/index.mjs';
-import checkRoutematches from './checkRoutematches.mjs';
+import checkRouteMatches from './checkRouteMatches.mjs';
 
 export default async (routeMatchGroupItem, input) => {
   if (Object.hasOwnProperty.call(input, 'name')) {
@@ -8,7 +8,7 @@ export default async (routeMatchGroupItem, input) => {
       throw createError(400);
     }
   }
-  await checkRoutematches(input.routeMatches);
+  await checkRouteMatches(input.routeMatches);
   const routeMatchGroupItemNext = await RouteMatchGroupModel.findOneAndUpdate(
     {
       _id: routeMatchGroupItem._id,
