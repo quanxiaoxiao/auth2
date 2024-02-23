@@ -4,6 +4,8 @@ import findSession from './findSession.mjs';
 import createSessionByUsernameAndPassword from './createSessionByUsernameAndPassword.mjs';
 import checkSession from './checkSession.mjs';
 import getSessionByRequest from './getSessionByRequest.mjs';
+import removeSession from './removeSession.mjs';
+import updateSession from './updateSession.mjs';
 
 export default {
   '/api/session': {
@@ -26,6 +28,12 @@ export default {
       }
     },
     get: (ctx) => {
+      ctx.response = {
+        data: ctx.sessionItem,
+      };
+    },
+    delete: async (ctx) => {
+      await removeSession(ctx.sessionItem);
       ctx.response = {
         data: ctx.sessionItem,
       };
@@ -58,6 +66,52 @@ export default {
           data: sessionItem,
         };
       },
+    },
+  },
+  '/authapi/session/:_id': {
+    select: {
+      type: 'object',
+      properties: sessionType,
+    },
+    onPre: async (ctx) => {
+      const sessionItem = await findSession(ctx.request.params._id);
+      if (!sessionItem) {
+        throw createError(404);
+      }
+      ctx.sessionItem = sessionItem;
+    },
+    get: (ctx) => {
+      ctx.response = {
+        data: ctx.sessionItem,
+      };
+    },
+    put: {
+      validate: {
+        type: 'object',
+        properties: {
+          description: {
+            type: 'string',
+            nullable: true,
+          },
+          timeExpired: {
+            type: 'number',
+            nullable: false,
+          },
+        },
+        additionalProperties: false,
+      },
+      fn: async (ctx) => {
+        const sessionItem = await updateSession(ctx.sessionItem, ctx.request.data);
+        ctx.response = {
+          data: sessionItem,
+        };
+      },
+    },
+    delete: async (ctx) => {
+      await removeSession(ctx.sessionItem);
+      ctx.response = {
+        data: ctx.sessionItem,
+      };
     },
   },
 };
