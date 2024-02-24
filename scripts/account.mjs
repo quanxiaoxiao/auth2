@@ -1,10 +1,13 @@
 import assert from 'node:assert';
 import dayjs from 'dayjs';
 import { http } from '@quanxiaoxiao/about-net';
+import { Semaphore } from '@quanxiaoxiao/utils';
 import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
 
 const port = 4037;
+
+const sem = new Semaphore(24);
 
 const createAccount = async ({
   username,
@@ -233,10 +236,12 @@ const testSessionsCreate = async ({
   }, Promise.resolve);
 };
 
-const pipeline = async (username) => {
+const pipeline = async ({
+  username,
+  password,
+  passwordNew,
+}) => {
   console.log(`account \`${username}\` will test...`);
-  const password = '123';
-  const newPassword = '456';
   const accountMatched = await getAccountByUsername(username);
   if (accountMatched) {
     const data = await removeAccount(accountMatched._id);
@@ -275,7 +280,7 @@ const pipeline = async (username) => {
   const accountItemUpdateRet = await updateAccount({
     account: accountItem._id,
     data: {
-      password: newPassword,
+      password: passwordNew,
     },
   });
 
@@ -290,14 +295,14 @@ const pipeline = async (username) => {
 
   await testSessionsCreate({
     username,
-    password: newPassword,
+    password: passwordNew,
     count: 55,
     account: accountItem._id,
   });
 
   const sessionItem = await createSession({
     username,
-    password: newPassword,
+    password: passwordNew,
   });
   assert(sessionItem);
 
@@ -368,9 +373,25 @@ const pipeline = async (username) => {
 
   await testSessionUnableCreate({
     username,
-    password: newPassword,
+    password: passwordNew,
   });
   console.log(`account \`${username}\` test ok`);
 };
 
-await pipeline('test_2');
+for (let i = 0; i < 30; i++) {
+  const d = {
+    username: `test_${i}`,
+    password: `aaa+${i}`,
+    passwordNew: `aaa+${i}__`,
+  };
+  sem.acquire(() => {
+    pipeline({
+      username: d.username,
+      password: d.password,
+      passwordNew: d.passwordNew,
+    })
+      .then(() => {
+        sem.release();
+      });
+  });
+}
