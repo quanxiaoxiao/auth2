@@ -8,7 +8,7 @@ import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
 const port = 4037;
 const hostname = '127.0.0.1';
 
-const sem = new Semaphore(24);
+const sem = new Semaphore(8);
 
 const createAccount = async ({
   username,
@@ -274,7 +274,7 @@ const pipeline = async ({
   await testSessionsCreate({
     username,
     password,
-    count: 33,
+    count: 10,
     account: accountItem._id,
   });
 
@@ -297,7 +297,7 @@ const pipeline = async ({
   await testSessionsCreate({
     username,
     password: passwordNew,
-    count: 55,
+    count: 10,
     account: accountItem._id,
   });
 
@@ -379,7 +379,7 @@ const pipeline = async ({
   console.log(`account \`${username}\` test ok`);
 };
 
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 100; i++) {
   const d = {
     username: `test_${i}`,
     password: `aaa+${i}`,
