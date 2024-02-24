@@ -78,6 +78,27 @@ const createSession = async ({
   return null;
 };
 
+const updateSession = async ({
+  session,
+  data,
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname: '127.0.0.1',
+    port,
+    method: 'PUT',
+    path: `/authapi/session/${session}`,
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...data,
+    }),
+  });
+  assert(requestRet.statusCode === 200);
+  const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  return ret;
+};
+
 const getSessionValid = async (token) => {
   const requestRet = await http.httpRequest({
     hostname: '127.0.0.1',
@@ -239,6 +260,11 @@ const pipeline = async (username) => {
 
   assert(accountEmpty == null);
 
+  await testSessionUnableCreate({
+    username,
+    password: `${password}1`,
+  });
+
   await testSessionsCreate({
     username,
     password,
@@ -268,6 +294,75 @@ const pipeline = async (username) => {
     count: 55,
     account: accountItem._id,
   });
+
+  const sessionItem = await createSession({
+    username,
+    password: newPassword,
+  });
+  assert(sessionItem);
+
+  let sessionValid = await getSessionValid(sessionItem.token);
+  assert(sessionValid);
+
+  await updateSession({
+    session: sessionItem._id,
+    data: {
+      timeExpired: dayjs().subtract(2, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(!sessionValid);
+
+  await updateSession({
+    session: sessionItem._id,
+    data: {
+      timeExpired: dayjs().add(2, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(sessionValid);
+
+  await updateAccount({
+    account: accountItem._id,
+    data: {
+      timeExpired: dayjs().subtract(1, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(!sessionValid);
+
+  await updateSession({
+    session: sessionItem._id,
+    data: {
+      timeExpired: dayjs().add(2, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(!sessionValid);
+
+  await updateAccount({
+    account: accountItem._id,
+    data: {
+      timeExpired: dayjs().add(1, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(!sessionValid);
+
+  await updateSession({
+    session: sessionItem._id,
+    data: {
+      timeExpired: dayjs().add(2, 'day').valueOf(),
+    },
+  });
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(sessionValid);
 
   await testAccountRemove(accountItem._id);
 

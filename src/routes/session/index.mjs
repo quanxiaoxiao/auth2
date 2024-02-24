@@ -33,12 +33,6 @@ export default {
         data: ctx.sessionItem,
       };
     },
-    delete: async (ctx) => {
-      await removeSession(ctx.sessionItem);
-      ctx.response = {
-        data: ctx.sessionItem,
-      };
-    },
     post: {
       validate: {
         type: 'object',
