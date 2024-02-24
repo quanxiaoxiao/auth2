@@ -47,9 +47,9 @@ export default {
     }
   },
   onHttpError: (ctx) => {
-    console.log(`${ctx.request.method} ${ctx.request.path} ${ctx.error.message}`);
+    console.warn(`${ctx.request.method} ${ctx.request.path} ${ctx.error.message}`);
     if (ctx.response.statusCode >= 500 && ctx.response.statusCode <= 599) {
-      console.log(ctx.error);
+      console.error(ctx.error);
     }
   },
 };

@@ -18,7 +18,7 @@ await connectDb({
   username: config.username,
   password: config.password,
   onRequest: (uri) => {
-    console.log(`mongo connect -> ${uri}`);
+    console.warn(`mongo connect -> ${uri}`);
   },
   onConnect: () => {
     console.warn('mongodb connect success');
