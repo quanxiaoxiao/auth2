@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { connectDb } from '@quanxiaoxiao/mongo';
-import { getCurrentDateTime } from '@quanxiaoxiao/utils';
 import accountSchema from './account.mjs';
 import sessionSchema from './session.mjs';
 import storageSchema from './storage.mjs';
@@ -25,7 +24,7 @@ await connectDb({
     console.warn('mongodb connect success');
     dispatch('mongo', (pre) => ({
       ...pre,
-      dateTimeConnect: getCurrentDateTime(),
+      dateTimeConnect: Date.now(),
       connect: true,
     }));
   },

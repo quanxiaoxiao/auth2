@@ -229,7 +229,15 @@ const pipeline = async (username) => {
     username,
     password,
   });
+
   assert(accountItem);
+
+  const accountEmpty = await createAccount({
+    username,
+    password,
+  });
+
+  assert(accountEmpty == null);
 
   await testSessionsCreate({
     username,
