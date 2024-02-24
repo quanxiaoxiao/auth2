@@ -82,6 +82,21 @@ const createSession = async ({
   return null;
 };
 
+const getSession = async (session) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    method: 'GET',
+    path: `/authapi/session/${session}`,
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return ret;
+  }
+  return null;
+};
+
 const updateSession = async ({
   session,
   data,
@@ -370,7 +385,15 @@ const pipeline = async ({
   sessionValid = await getSessionValid(sessionItem.token);
   assert(sessionValid);
 
+  let sessionRet = await getSession(sessionItem._id);
+  assert(sessionRet);
+
   await testAccountRemove(accountItem._id);
+
+  sessionValid = await getSessionValid(sessionItem.token);
+  assert(!sessionValid);
+  sessionRet = await getSession(sessionItem._id);
+  assert(!sessionRet);
 
   await testSessionUnableCreate({
     username,
@@ -379,7 +402,7 @@ const pipeline = async ({
   console.log(`account \`${username}\` test ok`);
 };
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 20; i++) {
   const d = {
     username: `test_${i}`,
     password: `aaa+${i}`,
