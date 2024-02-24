@@ -6,6 +6,7 @@ import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
 
 const port = 4037;
+const hostname = '127.0.0.1';
 
 const sem = new Semaphore(24);
 
@@ -15,7 +16,7 @@ const createAccount = async ({
   ...other
 }) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'POST',
     path: '/authapi/account',
@@ -41,7 +42,7 @@ const updateAccount = async ({
   data,
 }) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'PUT',
     path: `/authapi/account/${account}`,
@@ -62,7 +63,7 @@ const createSession = async ({
   password,
 }) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'POST',
     path: '/api/session',
@@ -86,7 +87,7 @@ const updateSession = async ({
   data,
 }) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'PUT',
     path: `/authapi/session/${session}`,
@@ -104,7 +105,7 @@ const updateSession = async ({
 
 const getSessionValid = async (token) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'GET',
     path: '/api/session',
@@ -121,7 +122,7 @@ const getSessionValid = async (token) => {
 
 const getAccountByUsername = async (username) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'GET',
     path: `/api/account?username=${username}`,
@@ -136,7 +137,7 @@ const getAccountByUsername = async (username) => {
 
 const removeAccount = async (account) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'DELETE',
     path: `/authapi/account/${account}`,
@@ -151,7 +152,7 @@ const removeAccount = async (account) => {
 
 const getAccountSessions = async (account) => {
   const requestRet = await http.httpRequest({
-    hostname: '127.0.0.1',
+    hostname,
     port,
     method: 'GET',
     path: `/authapi/sessions?account=${account}`,
