@@ -20,6 +20,12 @@ export default {
   info: {
     type: 'string',
   },
+  timeCreate: {
+    type: 'number',
+  },
+  timeUpdateWithPassword: {
+    type: 'number',
+  },
   routeMatchGroups: {
     type: 'array',
     properties: ['.', { type: 'string' }],

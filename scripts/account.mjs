@@ -50,6 +50,8 @@ const updateAccount = async ({
     }),
   });
   assert(requestRet.statusCode === 200);
+  const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  return ret;
 };
 
 const createSession = async ({
@@ -251,12 +253,16 @@ const pipeline = async (username) => {
     password,
   });
 
-  await updateAccount({
+  const accountItemUpdateRet = await updateAccount({
     account: accountItem._id,
     data: {
       password: newPassword,
     },
   });
+
+  assert(typeof accountItemUpdateRet.timeUpdateWithPassword === 'number');
+  assert(Date.now() > accountItemUpdateRet.timeUpdateWithPassword);
+  assert((Date.now() - 1000 * 5) < accountItemUpdateRet.timeUpdateWithPassword);
 
   await testAccountSessionsAllInvalid(accountItem._id);
 
