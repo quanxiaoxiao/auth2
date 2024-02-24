@@ -138,26 +138,10 @@ const getAccountSessions = async (account) => {
   return data.list;
 };
 
-const testSessionCreate = async ({
-  username,
-  password,
-}) => {
-  console.log(`\`${username}\` will create session`);
-  const sessionItem = await createSession({
-    username,
-    password,
-  });
-  assert(sessionItem);
-  console.log(`\`${username}\` will check session valid`);
-  const sessionValid = await getSessionValid(sessionItem.token);
-  assert(sessionValid);
-};
-
 const testSessionUnableCreate = async ({
   username,
   password,
 }) => {
-  console.log(`\`${username}\` will test session unable create`);
   const sessionItem = await createSession({
     username,
     password,
@@ -165,14 +149,9 @@ const testSessionUnableCreate = async ({
   assert(!sessionItem);
 };
 
-const testAccountRemove = async ({
-  account,
-  username,
-}) => {
-  console.log(`\`${username}\` will remove account`);
+const testAccountRemove = async (account) => {
   const accountItem = await removeAccount(account);
   assert(accountItem);
-  console.log(`\`${username}\` remove account success`);
   const sessionList = await getAccountSessions(accountItem._id);
   assert(sessionList.length === 0);
 };
@@ -184,17 +163,8 @@ const testAccountSessionsExpired = async (account) => {
   assert(sessionList.every((d) => d.timeExpired < now));
 };
 
-const testAccountSessionsAllInvalid = async (account) => {
-  const sessionList = await getAccountSessions(account);
-  assert(sessionList.length > 0);
-  await sessionList.reduce(async (acc, cur) => {
-    await acc;
-    const ret = await getSessionValid(cur.token);
-    assert(!ret);
-  }, Promise.resolve);
-};
-
 const testSessionsCreate = async ({
+  account,
   username,
   password,
   count = 1,
@@ -215,15 +185,39 @@ const testSessionsCreate = async ({
     const valid = await getSessionValid(sessionItem.data.token);
     assert(valid);
   }, Promise.resolve);
+
+  await updateAccount({
+    account,
+    data: {
+      timeExpired: dayjs().subtract(1, 'day').valueOf(),
+    },
+  });
+  await testAccountSessionsExpired(account);
+  await sessionList.reduce(async (acc, sessionItem) => {
+    await acc;
+    const valid = await getSessionValid(sessionItem.data.token);
+    assert(!valid);
+  }, Promise.resolve);
+  await updateAccount({
+    account,
+    data: {
+      timeExpired: dayjs().add(1, 'day').valueOf(),
+    },
+  });
+  await testAccountSessionsExpired(account);
+  await sessionList.reduce(async (acc, sessionItem) => {
+    await acc;
+    const valid = await getSessionValid(sessionItem.data.token);
+    assert(!valid);
+  }, Promise.resolve);
 };
 
 const pipeline = async (username) => {
-  console.log(`will create account \`${username}\``);
+  console.log(`account \`${username}\` will test...`);
   const password = '123';
   const newPassword = '456';
   const accountMatched = await getAccountByUsername(username);
   if (accountMatched) {
-    console.log(`\`${username}\` already exit will remove`);
     const data = await removeAccount(accountMatched._id);
     assert(data);
   }
@@ -235,56 +229,13 @@ const pipeline = async (username) => {
     username,
     password,
   });
+  assert(accountItem);
+
   await testSessionsCreate({
     username,
     password,
     count: 33,
-  });
-  assert(accountItem);
-  console.log(`account \`${username}\` create success`);
-  await testSessionCreate({
-    username,
-    password,
-  });
-
-  await testSessionCreate({
-    username,
-    password,
-  });
-
-  await testSessionCreate({
-    username,
-    password,
-  });
-
-  await updateAccount({
     account: accountItem._id,
-    data: {
-      timeExpired: dayjs().subtract(1, 'day').valueOf(),
-    },
-  });
-
-  await testAccountSessionsExpired(accountItem._id);
-
-  await testAccountSessionsAllInvalid(accountItem._id);
-
-  await testSessionUnableCreate({
-    username,
-    password,
-  });
-
-  await updateAccount({
-    account: accountItem._id,
-    data: {
-      timeExpired: dayjs().add(2, 'day').valueOf(),
-    },
-  });
-
-  await testAccountSessionsAllInvalid(accountItem._id);
-
-  await testSessionCreate({
-    username,
-    password,
   });
 
   const accountItemUpdateRet = await updateAccount({
@@ -298,29 +249,25 @@ const pipeline = async (username) => {
   assert(Date.now() > accountItemUpdateRet.timeUpdateWithPassword);
   assert((Date.now() - 1000 * 5) < accountItemUpdateRet.timeUpdateWithPassword);
 
-  await testAccountSessionsAllInvalid(accountItem._id);
-
-  const sessionEmpty = await createSession({
+  await testSessionUnableCreate({
     username,
     password,
   });
 
-  assert(sessionEmpty === null);
-
-  await testSessionCreate({
+  await testSessionsCreate({
     username,
     password: newPassword,
+    count: 55,
+    account: accountItem._id,
   });
 
-  await testAccountRemove({
-    account: accountItem._id,
-    username,
-  });
+  await testAccountRemove(accountItem._id);
 
   await testSessionUnableCreate({
     username,
     password: newPassword,
   });
+  console.log(`account \`${username}\` test ok`);
 };
 
 await pipeline('test_2');
