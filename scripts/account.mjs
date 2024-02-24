@@ -248,6 +248,8 @@ const pipeline = async (username) => {
     },
   });
 
+  await testAccountSessionsAllInvalid(accountItem._id);
+
   await testSessionCreate({
     username,
     password,
