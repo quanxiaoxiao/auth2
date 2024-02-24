@@ -38,12 +38,12 @@ export default async ({
     SessionModel.countDocuments(query),
     SessionModel.aggregate([
       {
+        $sort: sort,
+      },
+      {
         $match: {
           ...query,
         },
-      },
-      {
-        $sort: sort,
       },
       {
         $skip: skip,

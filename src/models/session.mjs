@@ -21,6 +21,7 @@ export default new Schema({
       SESSION_TYPE_LOGIN,
       SESSION_TYPE_MANUAL,
     ],
+    index: true,
   },
   userAgent: {
     type: String,
@@ -43,6 +44,7 @@ export default new Schema({
   timeCreate: {
     type: Number,
     default: Date.now,
+    index: true,
   },
   invalid: {
     type: Boolean,
