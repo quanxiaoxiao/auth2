@@ -194,6 +194,29 @@ const testAccountSessionsAllInvalid = async (account) => {
   }, Promise.resolve);
 };
 
+const testSessionsCreate = async ({
+  username,
+  password,
+  count = 1,
+}) => {
+  const sessionList = [];
+  await new Array(count).fill(0).reduce(async (acc) => {
+    await acc;
+    const sessionItem = await createSession({ username, password });
+    assert(sessionItem);
+    sessionList.push({
+      username,
+      password,
+      data: sessionItem,
+    });
+  }, Promise.resolve);
+  await sessionList.reduce(async (acc, sessionItem) => {
+    await acc;
+    const valid = await getSessionValid(sessionItem.data.token);
+    assert(valid);
+  }, Promise.resolve);
+};
+
 const pipeline = async (username) => {
   console.log(`will create account \`${username}\``);
   const password = '123';
@@ -204,9 +227,18 @@ const pipeline = async (username) => {
     const data = await removeAccount(accountMatched._id);
     assert(data);
   }
+  await testSessionUnableCreate({
+    username,
+    password,
+  });
   const accountItem = await createAccount({
     username,
     password,
+  });
+  await testSessionsCreate({
+    username,
+    password,
+    count: 33,
   });
   assert(accountItem);
   console.log(`account \`${username}\` create success`);
