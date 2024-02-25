@@ -6,6 +6,7 @@ import findRouteMatch from './findRouteMatch.mjs';
 import updateRouteMatch from './updateRouteMatch.mjs';
 import removeRouteMatch from './removeRouteMatch.mjs';
 import sortRouteMatches from './sortRouteMatches.mjs';
+import getAccountRouteMatches from './getAccountRouteMatches.mjs';
 
 export default {
   '/authapi/routematches': {
@@ -15,6 +16,18 @@ export default {
     },
     get: async (ctx) => {
       const routeMatchList = await queryRouteMatches({});
+      ctx.response = {
+        data: routeMatchList,
+      };
+    },
+  },
+  '/authapi/account/:account/routematches': {
+    select: {
+      type: 'array',
+      properties: routeMatchType,
+    },
+    get: async (ctx) => {
+      const routeMatchList = await getAccountRouteMatches(ctx.request.params.account);
       ctx.response = {
         data: routeMatchList,
       };
