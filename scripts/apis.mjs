@@ -173,3 +173,159 @@ export const getAccountSessions = async (account) => {
   const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
   return data.list;
 };
+
+export const getRouteMatch = async (routeMatch) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: `/authapi/routematch/${routeMatch}`,
+    method: 'GET',
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const createRouteMatch = async ({
+  path,
+  value = 15,
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: '/authapi/routematch',
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      path,
+      value,
+    }),
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const removeRouteMatch = async (routeMatch) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: `/authapi/routematch/${routeMatch}`,
+    method: 'DELETE',
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const getRouteMatches = async () => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: '/authapi/routematches',
+    method: 'GET',
+  });
+  assert(requestRet.statusCode === 200);
+  const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  return data;
+};
+
+export const createRouteMatchGroup = async ({
+  name,
+  isSetDefault = false,
+  routeMatches = [],
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: '/authapi/routematchgroup',
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      isSetDefault,
+      routeMatches,
+    }),
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const updateRouteMatchGroup = async ({
+  routeMatchGroup,
+  data,
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: `/authapi/routematchgroup/${routeMatchGroup}`,
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (requestRet.statusCode === 200) {
+    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return ret;
+  }
+  return null;
+};
+
+export const getRouteMatchGroup = async (routeMatchGroup) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: `/authapi/routematchgroup/${routeMatchGroup}`,
+    method: 'GET',
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const removeRouteMatchGroup = async (routeMatchGroup) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    path: `/authapi/routematchgroup/${routeMatchGroup}`,
+    method: 'DELETE',
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const getAccount = async (account) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    method: 'GET',
+    path: `/authapi/account/${account}`,
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
