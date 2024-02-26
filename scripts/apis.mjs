@@ -49,9 +49,11 @@ export const updateAccount = async ({
       ...data,
     }),
   });
-  assert(requestRet.statusCode === 200);
-  const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
-  return ret;
+  if (requestRet.statusCode === 200) {
+    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return ret;
+  }
+  return null;
 };
 
 export const createSession = async ({
@@ -321,6 +323,21 @@ export const getAccount = async (account) => {
     port,
     method: 'GET',
     path: `/authapi/account/${account}`,
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
+export const getAccountRouteMatches = async (account) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    method: 'GET',
+    path: `/authapi/account/${account}/routematches`,
     body: null,
   });
   if (requestRet.statusCode === 200) {
