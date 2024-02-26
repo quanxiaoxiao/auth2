@@ -80,6 +80,28 @@ export const createSession = async ({
   return null;
 };
 
+export const createSessionByAccount = async ({
+  account,
+}) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    method: 'POST',
+    path: '/authapi/session',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      account,
+    }),
+  });
+  if (requestRet.statusCode === 200) {
+    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
 export const getSession = async (session) => {
   const requestRet = await http.httpRequest({
     hostname,

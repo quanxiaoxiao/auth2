@@ -11,6 +11,7 @@ import {
   getAccountByUsername,
   removeAccount,
   getAccountSessions,
+  createSessionByAccount,
 } from './apis.mjs';
 
 const sem = new Semaphore(8);
@@ -110,6 +111,12 @@ const pipeline = async ({
   });
 
   assert(accountItem);
+
+  const accountSession = await createSessionByAccount({
+    account: accountItem._id,
+  });
+
+  assert(accountSession);
 
   const accountEmpty = await createAccount({
     username,
@@ -226,6 +233,12 @@ const pipeline = async ({
   assert(sessionRet);
 
   await testAccountRemove(accountItem._id);
+
+  const accountSession2 = await createSessionByAccount({
+    account: accountItem._id,
+  });
+
+  assert(!accountSession2);
 
   sessionValid = await getSessionValid(sessionItem.token);
   assert(!sessionValid);

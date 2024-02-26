@@ -8,6 +8,7 @@ import removeSession from './removeSession.mjs';
 import updateSession from './updateSession.mjs';
 import querySessions from './querySessions.mjs';
 import attachSessionWithRouteMatches from './attachSessionWithRouteMatches.mjs';
+import createSessionByAccount from './createSessionByAccount.mjs';
 
 export default {
   '/api/session': {
@@ -147,6 +148,34 @@ export default {
           list: ret.list,
         },
       };
+    },
+  },
+  '/authapi/session': {
+    select: {
+      type: 'object',
+      properties: sessionType,
+    },
+    post: {
+      validate: {
+        type: 'object',
+        properties: {
+          account: {
+            type: 'string',
+            minLength: 1,
+          },
+        },
+        required: ['account'],
+        additionalProperties: false,
+      },
+      fn: async (ctx) => {
+        const sessionItem = await createSessionByAccount(ctx.request.data);
+        if (!sessionItem) {
+          throw createError(404);
+        }
+        ctx.response = {
+          data: sessionItem,
+        };
+      },
     },
   },
   '/authapi/session/:_id': {
