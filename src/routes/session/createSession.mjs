@@ -15,23 +15,26 @@ export default async (accountItem, {
   type,
 }) => {
   const now = Date.now();
-  timeExpired = timeExpired == null
-    ? dayjs().add(getState().session.timeExpired, 'millisecond').valueOf()
-    : timeExpired;
+  const data = {
+    remoteAddress,
+    userAgent,
+    timeExpired,
+    description,
+    type,
+    hash: hmac(`${accountItem.username}:${accountItem.password}`),
+  };
+  if (data.timeExpired == null) {
+    data.timeExpired = dayjs().add(getState().session.timeExpired, 'millisecond').valueOf();
+  }
   if (accountItem.timeExpired != null) {
     if (accountItem.timeExpired < now) {
       throw createError(403, 'timeExpired is less now');
     }
-    timeExpired = Math.min(accountItem.timeExpired, timeExpired);
+    data.timeExpired = Math.min(accountItem.timeExpired, data.timeExpired);
   }
   const sessionItem = new SessionModel({
     account: accountItem._id,
-    remoteAddress,
-    userAgent,
-    description,
-    timeExpired,
-    type,
-    hash: hmac(`${accountItem.username}:${accountItem.password}`),
+    ...data,
   });
   await sessionItem.save();
   const result = await findSession(sessionItem._id);
