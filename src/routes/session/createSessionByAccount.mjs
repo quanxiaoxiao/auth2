@@ -4,7 +4,10 @@ import { SESSION_TYPE_MANUAL } from '../../constants.mjs';
 import { Account as AccountModel } from '../../models/index.mjs';
 import createSession from './createSession.mjs';
 
-export default async ({ account }) => {
+export default async ({
+  account,
+  timeExpired,
+}) => {
   if (!isValidObjectId(account)) {
     throw createError(404);
   }
@@ -19,6 +22,7 @@ export default async ({ account }) => {
   }
   const sessionItem = await createSession(accountItem, {
     type: SESSION_TYPE_MANUAL,
+    timeExpired,
   });
 
   return sessionItem;

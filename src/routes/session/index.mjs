@@ -163,6 +163,10 @@ export default {
             type: 'string',
             minLength: 1,
           },
+          timeExpired: {
+            type: 'number',
+            nullable: true,
+          },
         },
         required: ['account'],
         additionalProperties: false,
