@@ -4,6 +4,7 @@ import {
   updateAccount,
   getAccountByUsername,
   removeAccount,
+  createSession,
   createRouteMatch,
   createRouteMatchGroup,
   getAccountRouteMatches,
@@ -11,6 +12,7 @@ import {
   getAccount,
   removeRouteMatch,
   updateRouteMatchGroup,
+  getSessionByToken,
 } from './apis.mjs';
 
 const createRouteMatches = async (arr) => {
@@ -113,6 +115,17 @@ const pipeline = async () => {
   assert(accountItem);
   assert(accountItem.routeMatchGroups.some((routeMatchGroup) => routeMatchGroup === routeMatchGroupItem._id));
 
+  let sessionItem = await createSession({
+    username,
+    password,
+  });
+
+  assert(routeMatchList.every((d) => sessionItem.routeMatches.find((dd) => dd._id === d._id)));
+
+  await removeRouteMatch(routeMatchList[0]._id);
+  sessionItem = await getSessionByToken(sessionItem.token);
+  assert(!sessionItem.routeMatches.find((d) => d._id === routeMatchList[0]._id));
+
   await updateRouteMatchGroup({
     routeMatchGroup: routeMatchGroupItem._id,
     data: {
@@ -133,13 +146,23 @@ const pipeline = async () => {
   routeMatchGroupItem = await removeRouteMatchGroup(routeMatchGroupItem._id);
   assert(routeMatchGroupItem);
 
+  sessionItem = await getSessionByToken(sessionItem.token);
+  if (sessionItem.routeMatches.length > 0) {
+    assert(!routeMatchList.some((d) => sessionItem.routeMatches.find((dd) => dd._id === d._id)));
+  }
+
   accountItem = await removeAccount(accountItem._id);
   assert(!accountItem.routeMatchGroups.some((routeMatchGroup) => routeMatchGroup === routeMatchGroupItem._id));
   assert(accountItem);
   await removeAccount(accountItem2._id);
-  await routeMatchList.reduce(async (acc, cur) => {
+  await routeMatchList.reduce(async (acc, cur, i) => {
     await acc;
-    await removeRouteMatch(cur._id);
+    const item = await removeRouteMatch(cur._id);
+    if (i === 0) {
+      assert(!item);
+    } else {
+      assert(item);
+    }
   }, Promise.resolve);
 };
 

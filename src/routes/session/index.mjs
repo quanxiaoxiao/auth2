@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import sessionType from '../../types/session.mjs';
+import sessionType, { routeMatchesSession as routeMatchesSessionType } from '../../types/session.mjs';
 import findSession from './findSession.mjs';
 import createSessionByUsernameAndPassword from './createSessionByUsernameAndPassword.mjs';
 import checkSessionValid from './checkSessionValid.mjs';
@@ -7,12 +7,13 @@ import getSessionByRequest from './getSessionByRequest.mjs';
 import removeSession from './removeSession.mjs';
 import updateSession from './updateSession.mjs';
 import querySessions from './querySessions.mjs';
+import attachSessionWithRouteMatches from './attachSessionWithRouteMatches.mjs';
 
 export default {
   '/api/session': {
     select: {
       type: 'object',
-      properties: sessionType,
+      properties: routeMatchesSessionType,
     },
     onPre: async (ctx) => {
       if (ctx.request.method !== 'POST') {
@@ -29,8 +30,9 @@ export default {
       }
     },
     get: (ctx) => {
+      attachSessionWithRouteMatches(ctx.sessionItem);
       ctx.response = {
-        data: ctx.sessionItem,
+        data: attachSessionWithRouteMatches(ctx.sessionItem),
       };
     },
     post: {
@@ -58,7 +60,7 @@ export default {
           throw createError(404);
         }
         ctx.response = {
-          data: sessionItem,
+          data: attachSessionWithRouteMatches(sessionItem),
         };
       },
     },

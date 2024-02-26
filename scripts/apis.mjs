@@ -116,6 +116,24 @@ export const updateSession = async ({
   return ret;
 };
 
+export const getSessionByToken = async (token) => {
+  const requestRet = await http.httpRequest({
+    hostname,
+    port,
+    method: 'GET',
+    path: '/api/session',
+    headers: {
+      'x-auth': token,
+    },
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    return ret;
+  }
+  return null;
+};
+
 export const getSessionValid = async (token) => {
   const requestRet = await http.httpRequest({
     hostname,

@@ -36,3 +36,45 @@ export default {
     type: 'number',
   },
 };
+
+export const routeMatchesSession = {
+  _id: {
+    type: 'string',
+  },
+  token: ['.', {
+    type: 'string',
+    resolve: (d) => encodeSession({
+      timeExpired: d.timeExpired,
+      session: d._id,
+      type: d.type,
+    }),
+  }],
+  account: {
+    type: 'object',
+    properties: {
+      _id: {
+        type: 'string',
+      },
+      username: {
+        type: 'string',
+      },
+      avatar: {
+        type: 'string',
+      },
+    },
+  },
+  routeMatches: {
+    type: 'array',
+    properties: {
+      _id: {
+        type: 'string',
+      },
+      path: {
+        type: 'string',
+      },
+      value: {
+        type: 'integer',
+      },
+    },
+  },
+};
