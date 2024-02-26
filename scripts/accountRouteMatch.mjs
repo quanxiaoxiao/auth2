@@ -9,6 +9,7 @@ import {
   getAccountRouteMatches,
   removeRouteMatchGroup,
   getAccount,
+  removeRouteMatch,
   updateRouteMatchGroup,
 } from './apis.mjs';
 
@@ -136,6 +137,10 @@ const pipeline = async () => {
   assert(!accountItem.routeMatchGroups.some((routeMatchGroup) => routeMatchGroup === routeMatchGroupItem._id));
   assert(accountItem);
   await removeAccount(accountItem2._id);
+  await routeMatchList.reduce(async (acc, cur) => {
+    await acc;
+    await removeRouteMatch(cur._id);
+  }, Promise.resolve);
 };
 
 await pipeline();
