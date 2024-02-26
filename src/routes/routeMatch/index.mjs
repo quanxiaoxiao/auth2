@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import updateRouteMatchGroupsToStore from '../../providers/updateRouteMatchGroupsToStore.mjs';
 import routeMatchType from '../../types/routeMatch.mjs';
 import queryRouteMatches from './queryRouteMatches.mjs';
 import createRouteMatch from './createRouteMatch.mjs';
@@ -103,6 +104,11 @@ export default {
         throw createError(404);
       }
       ctx.routeMatchItem = routeMatchItem;
+    },
+    onPost: (ctx) => {
+      if (ctx.response.data && ['PUT', 'DELETE'].includes(ctx.request.method)) {
+        updateRouteMatchGroupsToStore();
+      }
     },
     get: (ctx) => {
       ctx.response = {

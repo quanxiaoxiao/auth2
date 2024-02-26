@@ -45,6 +45,15 @@ export default {
         _ctx.response.data = ctx.routeMatched.select(_ctx.response.data);
       };
     }
+    if (ctx.routeMatched.onPost) {
+      const _onResponse = ctx.onResponse;
+      ctx.onResponse = async (_ctx) => {
+        if (_onResponse) {
+          await _onResponse(_ctx);
+        }
+        await ctx.routeMatched.onPost(_ctx);
+      };
+    }
   },
   onHttpError: (ctx) => {
     console.warn(`${ctx.request.method} ${ctx.request.path} ${ctx.error.message}`);

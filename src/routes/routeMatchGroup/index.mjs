@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import updateRouteMatchGroupsToStore from '../../providers/updateRouteMatchGroupsToStore.mjs';
 import routeMatchGroupType from '../../types/routeMatchGroup.mjs';
 import queryRouteMatchGroups from './queryRouteMatchGroups.mjs';
 import createRouteMatchGroup from './createRouteMatchGroup.mjs';
@@ -46,6 +47,11 @@ export default {
       type: 'object',
       properties: routeMatchGroupType,
     },
+    onPost: (ctx) => {
+      if (ctx.response.data && ctx.request.method === 'POST') {
+        updateRouteMatchGroupsToStore();
+      }
+    },
     post: {
       validate: {
         type: 'object',
@@ -92,6 +98,11 @@ export default {
         throw createError(404);
       }
       ctx.routeMatchGroupItem = routeMatchGroupItem;
+    },
+    onPost: (ctx) => {
+      if (ctx.response.data && ['DELETE', 'PUT'].includes(ctx.request.method)) {
+        updateRouteMatchGroupsToStore();
+      }
     },
     get: (ctx) => {
       ctx.response = {

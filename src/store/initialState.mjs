@@ -14,6 +14,7 @@ const initialState = {
   configPathnames: {
     state: path.resolve(process.cwd(), '.state.json'),
   },
+  routeMatchGroups: {},
   cipher: {
     secret: process.env.CIPHER_SECRET,
     key: process.env.CIPHER_KEY,

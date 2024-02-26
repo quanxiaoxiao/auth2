@@ -52,6 +52,9 @@ process.nextTick(() => {
     if (d.onPre) {
       routeItem.onPre = d.onPre;
     }
+    if (d.onPost) {
+      routeItem.onPost = d.onPost;
+    }
     const methodList = ['get', 'post', 'put', 'delete'];
     for (let i = 0; i < methodList.length; i++) {
       const method = methodList[i];
