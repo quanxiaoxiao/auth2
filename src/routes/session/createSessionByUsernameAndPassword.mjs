@@ -17,9 +17,11 @@ export default async ({
       $ne: true,
     },
   });
+
   if (!accountItem) {
     throw createError(403, 'username or password is not match');
   }
+
   const sessionItem = await createSession(accountItem, {
     userAgent,
     type: SESSION_TYPE_LOGIN,
