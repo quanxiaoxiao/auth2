@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { http } from '@quanxiaoxiao/about-net';
+import { httpRequest } from '@quanxiaoxiao/http-request';
 import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
 
@@ -11,7 +11,7 @@ export const createAccount = async ({
   password,
   ...other
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'POST',
@@ -37,7 +37,7 @@ export const updateAccount = async ({
   account,
   data,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'PUT',
@@ -60,7 +60,7 @@ export const createSession = async ({
   username,
   password,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'POST',
@@ -83,7 +83,7 @@ export const createSession = async ({
 export const createSessionByAccount = async ({
   account,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'POST',
@@ -103,7 +103,7 @@ export const createSessionByAccount = async ({
 };
 
 export const getSession = async (session) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -121,7 +121,7 @@ export const updateSession = async ({
   session,
   data,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'PUT',
@@ -139,7 +139,7 @@ export const updateSession = async ({
 };
 
 export const getSessionByToken = async (token) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -157,7 +157,7 @@ export const getSessionByToken = async (token) => {
 };
 
 export const getSessionValid = async (token) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -174,7 +174,7 @@ export const getSessionValid = async (token) => {
 };
 
 export const getAccountByUsername = async (username) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -189,7 +189,7 @@ export const getAccountByUsername = async (username) => {
 };
 
 export const removeAccount = async (account) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'DELETE',
@@ -204,7 +204,7 @@ export const removeAccount = async (account) => {
 };
 
 export const getAccountSessions = async (account) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -217,7 +217,7 @@ export const getAccountSessions = async (account) => {
 };
 
 export const getRouteMatch = async (routeMatch) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: `/authapi/routematch/${routeMatch}`,
@@ -234,7 +234,7 @@ export const createRouteMatch = async ({
   path,
   value = 15,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: '/authapi/routematch',
@@ -255,7 +255,7 @@ export const createRouteMatch = async ({
 };
 
 export const removeRouteMatch = async (routeMatch) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: `/authapi/routematch/${routeMatch}`,
@@ -269,7 +269,7 @@ export const removeRouteMatch = async (routeMatch) => {
 };
 
 export const getRouteMatches = async () => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: '/authapi/routematches',
@@ -285,7 +285,7 @@ export const createRouteMatchGroup = async ({
   isSetDefault = false,
   routeMatches = [],
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: '/authapi/routematchgroup',
@@ -310,7 +310,7 @@ export const updateRouteMatchGroup = async ({
   routeMatchGroup,
   data,
 }) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: `/authapi/routematchgroup/${routeMatchGroup}`,
@@ -328,7 +328,7 @@ export const updateRouteMatchGroup = async ({
 };
 
 export const getRouteMatchGroup = async (routeMatchGroup) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: `/authapi/routematchgroup/${routeMatchGroup}`,
@@ -343,7 +343,7 @@ export const getRouteMatchGroup = async (routeMatchGroup) => {
 };
 
 export const removeRouteMatchGroup = async (routeMatchGroup) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     path: `/authapi/routematchgroup/${routeMatchGroup}`,
@@ -358,7 +358,7 @@ export const removeRouteMatchGroup = async (routeMatchGroup) => {
 };
 
 export const getAccount = async (account) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',
@@ -373,7 +373,7 @@ export const getAccount = async (account) => {
 };
 
 export const getAccountRouteMatches = async (account) => {
-  const requestRet = await http.httpRequest({
+  const requestRet = await httpRequest({
     hostname,
     port,
     method: 'GET',

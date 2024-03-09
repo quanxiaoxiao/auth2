@@ -21,8 +21,8 @@
     "node": ">= 20.0.0"
   },
   "dependencies": {
-    "@quanxiaoxiao/about-net": "^0.8.3",
     "@quanxiaoxiao/datav": "^0.1.1",
+    "@quanxiaoxiao/http-request": "^0.1.0",
     "@quanxiaoxiao/http-router": "^0.1.0",
     "@quanxiaoxiao/http-utils": "^0.3.4",
     "@quanxiaoxiao/httttp": "^0.4.0",
