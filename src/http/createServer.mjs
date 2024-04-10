@@ -1,12 +1,15 @@
 import net from 'node:net';
-import { handleSocketHttp } from '@quanxiaoxiao/httttp';
+import handleSocket from '@quanxiaoxiao/httttp';
 import store from '../store/store.mjs';
 import hooks from './hooks.mjs';
 
 const { getState } = store;
 
 export default () => {
-  const server = net.createServer(handleSocketHttp(hooks));
+  const server = net.createServer((socket) => handleSocket({
+    ...hooks,
+    socket,
+  }));
 
   server.listen(getState().server.port);
 };

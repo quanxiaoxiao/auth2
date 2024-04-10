@@ -27,7 +27,7 @@ export const createAccount = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -50,7 +50,7 @@ export const updateAccount = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const ret = decodeContentToJSON(requestRet.body, requestRet.headers);
     return ret;
   }
   return null;
@@ -74,7 +74,7 @@ export const createSession = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -96,7 +96,7 @@ export const createSessionByAccount = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -111,7 +111,7 @@ export const getSession = async (session) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const ret = decodeContentToJSON(requestRet.body, requestRet.headers);
     return ret;
   }
   return null;
@@ -134,7 +134,7 @@ export const updateSession = async ({
     }),
   });
   assert(requestRet.statusCode === 200);
-  const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  const ret = decodeContentToJSON(requestRet.body, requestRet.headers);
   return ret;
 };
 
@@ -150,7 +150,7 @@ export const getSessionByToken = async (token) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const ret = decodeContentToJSON(requestRet.body, requestRet.headers);
     return ret;
   }
   return null;
@@ -182,7 +182,7 @@ export const getAccountByUsername = async (username) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -197,7 +197,7 @@ export const removeAccount = async (account) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -212,7 +212,7 @@ export const getAccountSessions = async (account) => {
     body: null,
   });
   assert(requestRet.statusCode === 200);
-  const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  const data = decodeContentToJSON(requestRet.body, requestRet.headers);
   return data.list;
 };
 
@@ -224,7 +224,7 @@ export const getRouteMatch = async (routeMatch) => {
     method: 'GET',
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -248,7 +248,7 @@ export const createRouteMatch = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -262,7 +262,7 @@ export const removeRouteMatch = async (routeMatch) => {
     method: 'DELETE',
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -276,7 +276,7 @@ export const getRouteMatches = async () => {
     method: 'GET',
   });
   assert(requestRet.statusCode === 200);
-  const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+  const data = decodeContentToJSON(requestRet.body, requestRet.headers);
   return data;
 };
 
@@ -300,7 +300,7 @@ export const createRouteMatchGroup = async ({
     }),
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -321,7 +321,7 @@ export const updateRouteMatchGroup = async ({
     body: JSON.stringify(data),
   });
   if (requestRet.statusCode === 200) {
-    const ret = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const ret = decodeContentToJSON(requestRet.body, requestRet.headers);
     return ret;
   }
   return null;
@@ -336,7 +336,7 @@ export const getRouteMatchGroup = async (routeMatchGroup) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -351,7 +351,7 @@ export const removeRouteMatchGroup = async (routeMatchGroup) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -366,7 +366,7 @@ export const getAccount = async (account) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
@@ -381,7 +381,7 @@ export const getAccountRouteMatches = async (account) => {
     body: null,
   });
   if (requestRet.statusCode === 200) {
-    const data = await decodeContentToJSON(requestRet.body, requestRet.headers);
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
     return data;
   }
   return null;
