@@ -2,12 +2,11 @@ import process from 'node:process';
 import path from 'node:path';
 import * as dotenv from 'dotenv';
 import { select } from '@quanxiaoxiao/datav';
-import { getCurrentDateTime } from '@quanxiaoxiao/utils';
 
 dotenv.config();
 
 const initialState = {
-  dateTimeCreate: getCurrentDateTime(),
+  dateTimeCreate: Date.now(),
   server: {
     port: select({ type: 'integer' })(process.env.SERVER_PORT),
   },
