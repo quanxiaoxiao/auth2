@@ -1,3 +1,4 @@
+import logger from '../../logger.mjs';
 import { Session as SessionModel } from '../../models/index.mjs';
 
 export default async (sessionItem) => {
@@ -15,4 +16,5 @@ export default async (sessionItem) => {
       },
     },
   );
+  logger.warn(`\`${sessionItem._id}\` removeSession`);
 };

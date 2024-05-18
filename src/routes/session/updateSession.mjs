@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import logger from '../../logger.mjs';
 import {
   Session as SessionModel,
   Account as AccountModel,
@@ -41,5 +42,6 @@ export default async (sessionItem, input) => {
   if (!sessionItemNext || !sessionItemNext.account) {
     throw createError(403);
   }
+  logger.warn(`\`${sessionItem._id}\` updateSession \`${JSON.stringify(input)}\``);
   return sessionItemNext;
 };
