@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import createError from 'http-errors';
+import logger from '../../logger.mjs';
 import hmac from '../../providers/hmac.mjs';
 import {
   Account as AccountModel,
@@ -79,6 +81,8 @@ export default async (accountItem, input) => {
       );
     }
   }
+
+  logger.warn(`\`${accountItem._id}\` updateAccount \`${JSON.stringify(_.omit(input, ['password']))}\``);
 
   return accountItemNext;
 };

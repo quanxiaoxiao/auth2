@@ -1,6 +1,5 @@
 import createStore from '@quanxiaoxiao/store';
 import initialState from './initialState.mjs';
-import mapStateOutputMiddelware from './middlewares/mapStateOutput.mjs';
 
 const store = createStore({
   initialState,
@@ -28,7 +27,7 @@ const store = createStore({
       minLength: 1,
     },
   },
-  middlewares: [mapStateOutputMiddelware],
+  middlewares: [],
 });
 
 export default store;

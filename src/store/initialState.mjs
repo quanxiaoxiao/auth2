@@ -1,5 +1,4 @@
 import process from 'node:process';
-import path from 'node:path';
 import * as dotenv from 'dotenv';
 import { select } from '@quanxiaoxiao/datav';
 
@@ -9,9 +8,6 @@ const initialState = {
   dateTimeCreate: Date.now(),
   server: {
     port: select({ type: 'integer' })(process.env.SERVER_PORT),
-  },
-  configPathnames: {
-    state: path.resolve(process.cwd(), '.state.json'),
   },
   routeMatchGroups: {},
   cipher: {

@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import createError from 'http-errors';
+import logger from '../../logger.mjs';
 import {
   Account as AccountModel,
   RouteMatchGroup as RouteMatchGroupModel,
@@ -41,5 +43,6 @@ export default async (input) => {
   const accountItem = new AccountModel(data);
 
   await accountItem.save();
+  logger.warn(`createAccount \`${JSON.stringify(_.omit(input, ['password']))}\``);
   return accountItem;
 };
