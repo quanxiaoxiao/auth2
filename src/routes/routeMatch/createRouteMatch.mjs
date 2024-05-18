@@ -1,3 +1,4 @@
+import logger from '../../logger.mjs';
 import { RouteMatch as RouteMatchModel } from '../../models/index.mjs';
 import checkPathValidate from './checkPathValidate.mjs';
 
@@ -7,5 +8,6 @@ export default async (input) => {
     ...input,
   });
   await routeMatchItem.save();
+  logger.warn(`createRouteMatch \`${JSON.stringify(input)}\``);
   return routeMatchItem;
 };

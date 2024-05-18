@@ -1,3 +1,4 @@
+import logger from '../../logger.mjs';
 import {
   RouteMatchGroup as RouteMatchGroupModel,
   Account as AccountModel,
@@ -29,4 +30,5 @@ export default async (routeMatchGroupItem) => {
       },
     ),
   ]);
+  logger.warn(`\`${routeMatchGroupItem._id}\` removeRouteMatchGroup`);
 };
