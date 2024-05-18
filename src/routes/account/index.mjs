@@ -1,5 +1,4 @@
 import createError from 'http-errors';
-import getAccounts from './getAccounts.mjs';
 import accountType from '../../types/account.mjs';
 import queryAccounts from './queryAccounts.mjs';
 import findAccountByUsername from './findAccountByUsername.mjs';
@@ -9,25 +8,6 @@ import createAccount from './createAccount.mjs';
 import updateAccount from './updateAccount.mjs';
 
 export default {
-  '/api/accounts': {
-    select: {
-      type: 'array',
-      properties: {
-        _id: {
-          type: 'string',
-        },
-        username: {
-          type: 'string',
-        },
-      },
-    },
-    get: async (ctx) => {
-      const accountList = await getAccounts();
-      ctx.response = {
-        data: accountList,
-      };
-    },
-  },
   '/api/account': {
     select: {
       type: 'object',
