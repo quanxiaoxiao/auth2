@@ -2,8 +2,9 @@
 logger
 Dockerfile
 node_modules
+eslint.config.mjs
+docker-compose.yml
 .env
-.eslintrc
 .editorconfig
 .dockerignore
 [._]*.s[a-v][a-z]
