@@ -59,6 +59,9 @@ export default {
           name: {
             type: 'string',
             minLength: 1,
+            not: {
+              pattern: '^\\s+$',
+            },
           },
           description: {
             type: 'string',
@@ -122,6 +125,9 @@ export default {
           name: {
             type: 'string',
             minLength: 1,
+            not: {
+              pattern: '^\\s+$',
+            },
           },
           description: {
             type: 'string',

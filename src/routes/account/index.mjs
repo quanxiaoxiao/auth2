@@ -59,6 +59,9 @@ export default {
             type: 'string',
             minLength: 2,
             maxLength: 500,
+            not: {
+              pattern: '^\\s+$',
+            },
           },
           password: {
             type: 'string',

@@ -30,7 +30,7 @@ export const decodeSession = (str) => {
       return null;
     }
     return session;
-  } catch (error) {
+  } catch (error) { // eslint-disable-line
     return null;
   }
 };

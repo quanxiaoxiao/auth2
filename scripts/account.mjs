@@ -14,6 +14,13 @@ import {
   createSessionByAccount,
 } from './apis.mjs';
 
+const accountNull = await createAccount({
+  username: '    ',
+  password: '134',
+});
+
+assert.equal(accountNull, null);
+
 const sem = new Semaphore(8);
 
 const testSessionUnableCreate = async ({
