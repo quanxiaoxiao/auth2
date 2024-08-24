@@ -1,10 +1,25 @@
 import assert from 'node:assert';
-import { httpRequest } from '@quanxiaoxiao/http-request';
+import request from '@quanxiaoxiao/http-request';
 import { decodeContentToJSON } from '@quanxiaoxiao/http-utils';
 import { ACCOUNT_TYPE_TEST } from '../src/constants.mjs';
 
 const port = 4037;
 const hostname = '127.0.0.1';
+
+const httpRequest = async ({
+  hostname,
+  port,
+  ...options
+}) => {
+  const ret = await request(
+    options,
+    {
+      hostname,
+      port,
+    },
+  );
+  return ret;
+};
 
 export const createAccount = async ({
   username,

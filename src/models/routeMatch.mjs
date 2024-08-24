@@ -7,10 +7,6 @@ export default new Schema({
     type: String,
     required: true,
     trim: true,
-    validate: {
-      validator: (v) => /^\//.test(v),
-      message: (props) => `${props.value} invalid`,
-    },
   },
   order: {
     type: Number,

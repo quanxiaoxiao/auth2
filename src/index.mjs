@@ -1,10 +1,11 @@
 import net from 'node:net';
 import process from 'node:process';
-import handleSocket from '@quanxiaoxiao/httttp';
 import {
-  createHttpRequestHooks,
+  handleSocketRequest,
+  createHttpRequestHandler,
   generateRouteMatchList,
-} from '@quanxiaoxiao/http-router';
+} from '@quanxiaoxiao/httttp';
+import { selectRouteMatchList } from './store/selector.mjs';
 import store from './store/store.mjs';
 import './models/index.mjs';
 import logger from './logger.mjs';
@@ -17,15 +18,14 @@ process.nextTick(async () => {
 
   dispatch('routeMatchList', generateRouteMatchList(routes));
 
-  const httpRequestHooks = createHttpRequestHooks({
-    getRouteMatches: () => getState().routeMatchList,
-    logger,
-  });
-
-  const server = net.createServer((socket) => handleSocket({
-    ...httpRequestHooks,
+  const server = net.createServer((socket) => handleSocketRequest({
     socket,
+    ...createHttpRequestHandler({
+      list: selectRouteMatchList(),
+      logger,
+    }),
   }));
+
   const { port } = getState().server;
   server.listen(port, () => {
     console.log(`server listen at \`${port}\``);
