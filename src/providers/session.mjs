@@ -15,11 +15,7 @@ export const decodeSession = (str) => {
   }
   try {
     const text = decode(str);
-    let [
-      ,
-      dateTimeExpired,
-      session,
-    ] = text.split(':');
+    let [, dateTimeExpired, session] = text.split(':');
     if (!isValidObjectId(session)) {
       return null;
     }
