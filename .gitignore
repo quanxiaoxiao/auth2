@@ -1,13 +1,11 @@
 node_modules
 logger
 *.log
-dist
 *.tar
 .DS_store
 .env
 .state.json
 _index.mjs
-_index.js
 _temp
 
 # Swap
