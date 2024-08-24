@@ -28,11 +28,11 @@ export default async ({
     query.account = new mongoose.Types.ObjectId(query.account);
   }
   const sort = {};
-  if (orderBy === 'timeCreate') {
+  if (orderBy === 'dateTimeCreate') {
     sort[orderBy] = order;
   } else {
     sort[orderBy] = order;
-    sort.timeCreate = -1;
+    sort.dateTimeCreate = -1;
   }
   const [count, list] = await Promise.all([
     SessionModel.countDocuments(query),

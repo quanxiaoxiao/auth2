@@ -12,7 +12,7 @@ export default async (accountItem, input) => {
   const now = Date.now();
   const data = {
     ...input,
-    timeUpdate: now,
+    dateTimeUpdate: now,
   };
   const query = {
     _id: accountItem._id,
@@ -23,7 +23,7 @@ export default async (accountItem, input) => {
 
   if (data.password) {
     data.password = hmac(data.password);
-    data.timeUpdateWithPassword = now;
+    data.dateTimeUpdateWithPassword = now;
   }
 
   if (data.routeMatchGroups) {

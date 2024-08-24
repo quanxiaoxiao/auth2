@@ -151,9 +151,9 @@ const pipeline = async ({
     },
   });
 
-  assert(typeof accountItemUpdateRet.timeUpdateWithPassword === 'number');
-  assert(Date.now() > accountItemUpdateRet.timeUpdateWithPassword);
-  assert((Date.now() - 1000 * 5) < accountItemUpdateRet.timeUpdateWithPassword);
+  assert(typeof accountItemUpdateRet.dateTimeUpdateWithPassword === 'number');
+  assert(Date.now() > accountItemUpdateRet.dateTimeUpdateWithPassword);
+  assert((Date.now() - 1000 * 5) < accountItemUpdateRet.dateTimeUpdateWithPassword);
 
   await testSessionUnableCreate({
     username,

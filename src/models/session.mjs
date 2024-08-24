@@ -41,7 +41,7 @@ export default new Schema({
     type: String,
     index: true,
   },
-  timeCreate: {
+  dateTimeCreate: {
     type: Number,
     default: Date.now,
     index: true,

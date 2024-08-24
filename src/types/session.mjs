@@ -32,7 +32,7 @@ export default {
   dateTimeExpired: {
     type: 'number',
   },
-  timeCreate: {
+  dateTimeCreate: {
     type: 'number',
   },
 };

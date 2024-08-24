@@ -137,15 +137,15 @@ export default {
         type: 'string',
         resolve: (v) => {
           if (!v) {
-            return 'timeCreate';
+            return 'dateTimeCreate';
           }
           return v;
         },
       },
-      timeCreateStart: {
+      dateTimeCreateStart: {
         type: 'number',
       },
-      timeCreateEnd: {
+      dateTimeCreateEnd: {
         type: 'number',
       },
       keywords: {
@@ -173,7 +173,7 @@ export default {
     match: {
       'query.order': { $in: [-1, 1] },
       'query.orderBy': {
-        $in: ['type', 'timeCreate', 'dateTimeExpired'],
+        $in: ['type', 'dateTimeCreate', 'dateTimeExpired'],
       },
       'query.limit': { $gt: 0 },
       'query.skip': { $gte: 0 },

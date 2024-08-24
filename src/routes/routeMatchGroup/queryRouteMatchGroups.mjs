@@ -12,7 +12,7 @@ export default async (args) => {
     .find(query)
     .sort({
       order: -1,
-      timeCreate: 1,
+      dateTimeCreate: 1,
     });
   return routeMatchGroupList;
 };

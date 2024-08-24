@@ -93,7 +93,7 @@ export default {
         type: 'string',
         resolve: (v) => {
           if (!v) {
-            return 'timeCreate';
+            return 'dateTimeCreate';
           }
           return v;
         },
@@ -119,10 +119,10 @@ export default {
       account: {
         type: 'string',
       },
-      timeCreateStart: {
+      dateTimeCreateStart: {
         type: 'number',
       },
-      timeCreateEnd: {
+      dateTimeCreateEnd: {
         type: 'number',
       },
       type: {
@@ -135,7 +135,7 @@ export default {
     match: {
       'query.order': { $in: [-1, 1] },
       'query.orderBy': {
-        $in: ['type', 'timeCreate', 'dateTimeExpired', 'account'],
+        $in: ['type', 'dateTimeCreate', 'dateTimeExpired', 'account'],
       },
       'query.limit': { $gt: 0 },
       'query.skip': { $gte: 0 },

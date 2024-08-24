@@ -20,10 +20,10 @@ export default {
   info: {
     type: 'string',
   },
-  timeCreate: {
+  dateTimeCreate: {
     type: 'number',
   },
-  timeUpdateWithPassword: {
+  dateTimeUpdateWithPassword: {
     type: 'number',
   },
   routeMatchGroups: {

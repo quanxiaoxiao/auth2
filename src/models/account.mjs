@@ -34,11 +34,11 @@ export default new Schema({
     },
     index: true,
   },
-  timeUpdate: {
+  dateTimeUpdate: {
     type: Number,
     default: Date.now,
   },
-  timeUpdateWithPassword: {
+  dateTimeUpdateWithPassword: {
     type: Number,
     default: Date.now,
   },
@@ -50,7 +50,7 @@ export default new Schema({
     type: String,
     default: '',
   },
-  timeCreate: {
+  dateTimeCreate: {
     type: Number,
     index: true,
     default: Date.now,

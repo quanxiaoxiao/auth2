@@ -32,7 +32,7 @@ export default new Schema({
     default: '',
     trim: true,
   },
-  timeCreate: {
+  dateTimeCreate: {
     type: Number,
     default: Date.now,
   },
