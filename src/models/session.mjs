@@ -29,7 +29,7 @@ export default new Schema({
   remoteAddress: {
     type: String,
   },
-  timeExpired: {
+  dateTimeExpired: {
     type: Number,
     required: true,
     index: true,

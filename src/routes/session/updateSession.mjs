@@ -19,11 +19,11 @@ export default async (sessionItem, input) => {
   if (!accountItem) {
     throw createError(403);
   }
-  if (data.timeExpired != null
-    && accountItem.timeExpired != null
-    && data.timeExpired > accountItem.timeExpired
+  if (data.dateTimeExpired != null
+    && accountItem.dateTimeExpired != null
+    && data.dateTimeExpired > accountItem.dateTimeExpired
   ) {
-    data.timeExpired = accountItem.timeExpired;
+    data.dateTimeExpired = accountItem.dateTimeExpired;
   }
   await SessionModel.updateOne(
     {

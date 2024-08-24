@@ -4,10 +4,10 @@ import { isValidObjectId } from '@quanxiaoxiao/mongo';
 import { encode, decode } from './cipher.mjs';
 
 export const encodeSession = ({
-  timeExpired,
+  dateTimeExpired,
   session,
   type,
-}) => encode(`${Date.now()}:${timeExpired}:${session.toString()}:${type}`);
+}) => encode(`${Date.now()}:${dateTimeExpired}:${session.toString()}:${type}`);
 
 export const decodeSession = (str) => {
   if (!str) {
@@ -17,16 +17,16 @@ export const decodeSession = (str) => {
     const text = decode(str);
     let [
       ,
-      timeExpired,
+      dateTimeExpired,
       session,
     ] = text.split(':');
     if (!isValidObjectId(session)) {
       return null;
     }
     const now = Date.now();
-    timeExpired = select({ type: 'number' })(timeExpired);
+    dateTimeExpired = select({ type: 'number' })(dateTimeExpired);
     session = new mongoose.Types.ObjectId(session);
-    if (timeExpired == null || timeExpired < now) {
+    if (dateTimeExpired == null || dateTimeExpired < now) {
       return null;
     }
     return session;

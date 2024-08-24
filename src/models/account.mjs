@@ -42,7 +42,7 @@ export default new Schema({
     type: Number,
     default: Date.now,
   },
-  timeExpired: {
+  dateTimeExpired: {
     type: Number,
     index: true,
   },

@@ -80,7 +80,7 @@ export default {
             type: 'string',
             nullable: true,
           },
-          timeExpired: {
+          dateTimeExpired: {
             type: 'number',
             nullable: true,
           },
@@ -173,7 +173,7 @@ export default {
     match: {
       'query.order': { $in: [-1, 1] },
       'query.orderBy': {
-        $in: ['type', 'timeCreate', 'timeExpired'],
+        $in: ['type', 'timeCreate', 'dateTimeExpired'],
       },
       'query.limit': { $gt: 0 },
       'query.skip': { $gte: 0 },
@@ -229,7 +229,7 @@ export default {
             minimum: 1,
             maximum: 99,
           },
-          timeExpired: {
+          dateTimeExpired: {
             type: 'number',
             nullable: true,
           },

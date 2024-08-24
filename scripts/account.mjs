@@ -45,7 +45,7 @@ const testAccountSessionsExpired = async (account) => {
   const sessionList = await getAccountSessions(account);
   const now = Date.now();
   assert(sessionList.length > 0);
-  assert(sessionList.every((d) => d.timeExpired < now));
+  assert(sessionList.every((d) => d.dateTimeExpired < now));
 };
 
 const testSessionsCreate = async ({
@@ -74,7 +74,7 @@ const testSessionsCreate = async ({
   await updateAccount({
     account,
     data: {
-      timeExpired: dayjs().subtract(1, 'day').valueOf(),
+      dateTimeExpired: dayjs().subtract(1, 'day').valueOf(),
     },
   });
   await testAccountSessionsExpired(account);
@@ -86,7 +86,7 @@ const testSessionsCreate = async ({
   await updateAccount({
     account,
     data: {
-      timeExpired: dayjs().add(1, 'day').valueOf(),
+      dateTimeExpired: dayjs().add(1, 'day').valueOf(),
     },
   });
   await testAccountSessionsExpired(account);
@@ -179,7 +179,7 @@ const pipeline = async ({
   await updateSession({
     session: sessionItem._id,
     data: {
-      timeExpired: dayjs().subtract(2, 'day').valueOf(),
+      dateTimeExpired: dayjs().subtract(2, 'day').valueOf(),
     },
   });
 
@@ -189,7 +189,7 @@ const pipeline = async ({
   await updateSession({
     session: sessionItem._id,
     data: {
-      timeExpired: dayjs().add(2, 'day').valueOf(),
+      dateTimeExpired: dayjs().add(2, 'day').valueOf(),
     },
   });
 
@@ -199,7 +199,7 @@ const pipeline = async ({
   await updateAccount({
     account: accountItem._id,
     data: {
-      timeExpired: dayjs().subtract(1, 'day').valueOf(),
+      dateTimeExpired: dayjs().subtract(1, 'day').valueOf(),
     },
   });
 
@@ -209,7 +209,7 @@ const pipeline = async ({
   await updateSession({
     session: sessionItem._id,
     data: {
-      timeExpired: dayjs().add(2, 'day').valueOf(),
+      dateTimeExpired: dayjs().add(2, 'day').valueOf(),
     },
   });
 
@@ -219,7 +219,7 @@ const pipeline = async ({
   await updateAccount({
     account: accountItem._id,
     data: {
-      timeExpired: dayjs().add(1, 'day').valueOf(),
+      dateTimeExpired: dayjs().add(1, 'day').valueOf(),
     },
   });
 
@@ -229,7 +229,7 @@ const pipeline = async ({
   await updateSession({
     session: sessionItem._id,
     data: {
-      timeExpired: dayjs().add(2, 'day').valueOf(),
+      dateTimeExpired: dayjs().add(2, 'day').valueOf(),
     },
   });
 

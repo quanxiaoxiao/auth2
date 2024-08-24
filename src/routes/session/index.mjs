@@ -135,7 +135,7 @@ export default {
     match: {
       'query.order': { $in: [-1, 1] },
       'query.orderBy': {
-        $in: ['type', 'timeCreate', 'timeExpired', 'account'],
+        $in: ['type', 'timeCreate', 'dateTimeExpired', 'account'],
       },
       'query.limit': { $gt: 0 },
       'query.skip': { $gte: 0 },
@@ -163,7 +163,7 @@ export default {
             type: 'string',
             minLength: 1,
           },
-          timeExpired: {
+          dateTimeExpired: {
             type: 'number',
             nullable: true,
           },
@@ -207,7 +207,7 @@ export default {
             type: 'string',
             nullable: true,
           },
-          timeExpired: {
+          dateTimeExpired: {
             type: 'number',
             nullable: false,
           },

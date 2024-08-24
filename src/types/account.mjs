@@ -11,7 +11,7 @@ export default {
   description: {
     type: 'string',
   },
-  timeExpired: {
+  dateTimeExpired: {
     type: 'number',
   },
   avatar: {

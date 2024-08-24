@@ -44,21 +44,21 @@ export default async (accountItem, input) => {
     throw createError(404);
   }
 
-  if (accountItemNext.timeExpired != null) {
-    if (accountItemNext.timeExpired < now) {
+  if (accountItemNext.dateTimeExpired != null) {
+    if (accountItemNext.dateTimeExpired < now) {
       await SessionModel.updateMany(
         {
           account: accountItem._id,
           invalid: {
             $ne: true,
           },
-          timeExpired: {
+          dateTimeExpired: {
             $gt: now,
           },
         },
         {
           $set: {
-            timeExpired: accountItemNext.timeExpired,
+            dateTimeExpired: accountItemNext.dateTimeExpired,
           },
         },
       );
@@ -69,13 +69,13 @@ export default async (accountItem, input) => {
           invalid: {
             $ne: true,
           },
-          timeExpired: {
-            $gt: accountItemNext.timeExpired,
+          dateTimeExpired: {
+            $gt: accountItemNext.dateTimeExpired,
           },
         },
         {
           $set: {
-            timeExpired: accountItemNext.timeExpired,
+            dateTimeExpired: accountItemNext.dateTimeExpired,
           },
         },
       );

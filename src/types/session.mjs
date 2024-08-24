@@ -11,7 +11,7 @@ export default {
   token: ['.', {
     type: 'string',
     resolve: (d) => encodeSession({
-      timeExpired: d.timeExpired,
+      dateTimeExpired: d.dateTimeExpired,
       session: d._id,
       type: d.type,
     }),
@@ -29,7 +29,7 @@ export default {
   description: {
     type: 'string',
   },
-  timeExpired: {
+  dateTimeExpired: {
     type: 'number',
   },
   timeCreate: {
@@ -44,7 +44,7 @@ export const routeMatchesSession = {
   token: ['.', {
     type: 'string',
     resolve: (d) => encodeSession({
-      timeExpired: d.timeExpired,
+      dateTimeExpired: d.dateTimeExpired,
       session: d._id,
       type: d.type,
     }),

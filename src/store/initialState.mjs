@@ -17,7 +17,7 @@ const initialState = {
     algorithm: process.env.CIPHER_ALGORITHM,
   },
   session: {
-    timeExpired: select({ type: 'integer' })(process.env.SESSION_TIME_EXPIRED) || 1000 * 60 * 20,
+    dateTimeExpired: select({ type: 'integer' })(process.env.SESSION_TIME_EXPIRED) || 1000 * 60 * 20,
     key: process.env.SESSION_KEY,
     authKey: process.env.SESSION_AUTH_KEY,
   },

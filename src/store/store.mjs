@@ -14,7 +14,7 @@ const store = createStore({
       maximum: 65535,
       minimum: 1,
     },
-    'session.timeExpired': {
+    'session.dateTimeExpired': {
       type: 'integer',
       minimum: 1000 * 60 * 20,
     },
