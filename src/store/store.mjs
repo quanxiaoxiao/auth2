@@ -1,8 +1,14 @@
 import createStore from '@quanxiaoxiao/store';
 import initialState from './initialState.mjs';
+import attachCipher from './attachCipher.mjs';
 
 const store = createStore({
-  initialState,
+  initialState: attachCipher(initialState)({
+    secret: process.env.CIPHER_SECRET,
+    key: process.env.CIPHER_KEY,
+    iv: process.env.CIPHER_IV,
+    algorithm: process.env.CIPHER_ALGORITHM,
+  }),
   schemas: {
     'server.port': {
       type: 'integer',

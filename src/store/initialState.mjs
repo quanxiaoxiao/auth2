@@ -10,12 +10,7 @@ const initialState = {
     port: select({ type: 'integer' })(process.env.SERVER_PORT),
   },
   routeMatchGroups: {},
-  cipher: {
-    secret: process.env.CIPHER_SECRET,
-    key: process.env.CIPHER_KEY,
-    iv: process.env.CIPHER_IV,
-    algorithm: process.env.CIPHER_ALGORITHM,
-  },
+  cipher: null,
   session: {
     dateTimeExpired: select({ type: 'integer' })(process.env.SESSION_TIME_EXPIRED) || 1000 * 60 * 20,
     key: process.env.SESSION_KEY,
