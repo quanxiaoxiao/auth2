@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import createError from 'http-errors';
 import store from '../../store/store.mjs';
 import { Session as SessionModel } from '../../models/index.mjs';
-import hmac from '../../providers/hmac.mjs';
+import calcAccountHash from '../../providers/calcAccountHash.mjs';
 import findSession from './findSession.mjs';
 
 const { getState } = store;
@@ -21,7 +21,7 @@ export default async (accountItem, {
     dateTimeExpired,
     description,
     type,
-    hash: hmac(`${accountItem.username}:${accountItem.password}`),
+    hash: calcAccountHash(accountItem),
   };
   if (data.dateTimeExpired == null) {
     data.dateTimeExpired = dayjs().add(getState().session.dateTimeExpired, 'millisecond').valueOf();
