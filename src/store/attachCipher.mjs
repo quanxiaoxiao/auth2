@@ -1,27 +1,22 @@
 import crypto from 'node:crypto';
 import assert from 'node:assert';
-import { Buffer } from 'node:buffer';
 import { select } from '@quanxiaoxiao/datav';
 
 export default (state) => ({
   secret,
-  key,
-  iv,
   algorithm,
 }) => {
-  assert(typeof key === 'string');
-  assert(typeof iv === 'string');
-  assert(typeof algorithm === 'string');
   assert(typeof secret === 'string');
   assert(secret.length >= 1);
+  assert(typeof algorithm === 'string');
   assert(crypto.getCiphers().includes(algorithm));
-  const keyBuf = Buffer.from(key, 'hex');
-  const ivBuf = Buffer.from(iv, 'hex');
-  assert(ivBuf.length === 16);
-
   const size = select({ type: 'integer' })(algorithm.split('-')[1]);
   assert(size !== null && size % 8 === 0);
-  assert(keyBuf.length * 8 === size);
+  assert(size <= 256);
+  const mac = crypto.createHmac('sha256', secret).update(secret).digest('buf');
+  const ivBuf = mac.slice(-16);
+  const keyBuf = mac.slice(0, size / 8);
+
   const cipher = crypto.createCipheriv(
     algorithm,
     keyBuf,

@@ -5,8 +5,6 @@ import attachCipher from './attachCipher.mjs';
 const store = createStore({
   initialState: attachCipher(initialState)({
     secret: process.env.CIPHER_SECRET,
-    key: process.env.CIPHER_KEY,
-    iv: process.env.CIPHER_IV,
     algorithm: process.env.CIPHER_ALGORITHM,
   }),
   schemas: {
