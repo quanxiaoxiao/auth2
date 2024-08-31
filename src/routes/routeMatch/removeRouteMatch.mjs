@@ -16,7 +16,7 @@ export default async (routeMatchItem) => {
       {
         $set: {
           invalid: true,
-          timeInvalid: Date.now(),
+          dateTimeInvalid: Date.now(),
         },
       },
     ),

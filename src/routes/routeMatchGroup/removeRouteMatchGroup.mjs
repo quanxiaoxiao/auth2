@@ -16,7 +16,7 @@ export default async (routeMatchGroupItem) => {
       {
         $set: {
           invalid: true,
-          timeInvalid: Date.now(),
+          dateTimeInvalid: Date.now(),
         },
       },
     ),

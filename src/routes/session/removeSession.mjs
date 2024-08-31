@@ -12,7 +12,7 @@ export default async (sessionItem) => {
     {
       $set: {
         invalid: true,
-        timeInvalid: Date.now(),
+        dateTimeInvalid: Date.now(),
       },
     },
   );

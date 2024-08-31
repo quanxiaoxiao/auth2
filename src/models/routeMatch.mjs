@@ -41,7 +41,7 @@ export default new Schema({
     index: true,
     default: false,
   },
-  timeInvalid: {
+  dateTimeInvalid: {
     type: Number,
   },
 });

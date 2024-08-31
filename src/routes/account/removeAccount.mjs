@@ -18,7 +18,7 @@ export default async (accountItem) => {
       {
         $set: {
           invalid: true,
-          timeInvalid: now,
+          dateTimeInvalid: now,
         },
       },
     ),
@@ -32,7 +32,7 @@ export default async (accountItem) => {
       {
         $set: {
           invalid: true,
-          timeInvalid: now,
+          dateTimeInvalid: now,
         },
       },
     ),
