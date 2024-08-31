@@ -5,10 +5,11 @@ import store from '../../store/store.mjs';
 const { getState } = store;
 
 const getToken = (request) => {
-  if (Object.hasOwnProperty.call(request.headers, getState().session.authKey)) {
-    return request.headers[getState().session.authKey];
+  const sessionAuthKey = getState.session.authKey;
+  if (Object.hasOwnProperty.call(request.headers, sessionAuthKey)) {
+    return request.headers[sessionAuthKey];
   }
-  return parseCookie(request.headers.cookie)[getState().session.key];
+  return parseCookie(request.headers.cookie)[sessionAuthKey];
 };
 
 export default (request) => {
