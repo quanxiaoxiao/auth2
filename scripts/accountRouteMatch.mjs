@@ -1,10 +1,12 @@
 import assert from 'node:assert';
+import { waitFor } from '@quanxiaoxiao/utils';
 import {
   createAccount,
   updateAccount,
   getAccountByUsername,
   removeAccount,
   createSession,
+  getRouteMatchGroup,
   createRouteMatch,
   createRouteMatchGroup,
   getAccountRouteMatches,
@@ -51,14 +53,14 @@ const pipeline = async () => {
   assert(routeMatchGroupItem);
 
   const routeMatchGroupItem2 = await createRouteMatchGroup({
-    name: 'bbccddee',
+    name: 'bbccddees',
     routeMatches: routeMatchList.slice(0, 2).map((d) => d._id),
   });
 
   assert(routeMatchGroupItem2);
 
   const routeMatchGroupItem3 = await createRouteMatchGroup({
-    name: 'bbccddee',
+    name: 'bbccddees',
     routeMatches: [...routeMatchList.map((d) => d._id), routeMatchList[0]._id],
   });
 
@@ -93,6 +95,12 @@ const pipeline = async () => {
   assert(!accountItemEmpty);
 
   await removeRouteMatchGroup(routeMatchGroupItem2._id);
+
+  let routeMatchGroupEmpty = await getRouteMatchGroup(routeMatchGroupItem2._id);
+
+  assert.equal(routeMatchGroupEmpty, null);
+
+  await waitFor(200);
 
   accountItem = await getAccount(accountItem._id);
   assert(accountItem);
@@ -135,6 +143,13 @@ const pipeline = async () => {
 
   assert(accountItem.routeMatchGroups.some((routeMatchGroup) => routeMatchGroup === routeMatchGroupItem._id));
 
+  {
+    const ret = await getAccountByUsername(`${username}_1`);
+    if (ret) {
+      await removeAccount(ret._id);
+    }
+  }
+
   const accountItem2 = await createAccount({
     username: `${username}_1`,
     password,
@@ -146,12 +161,15 @@ const pipeline = async () => {
   routeMatchGroupItem = await removeRouteMatchGroup(routeMatchGroupItem._id);
   assert(routeMatchGroupItem);
 
+  await waitFor(200);
+
   sessionItem = await getSessionByToken(sessionItem.token);
   if (sessionItem.routeMatches.length > 0) {
     assert(!routeMatchList.some((d) => sessionItem.routeMatches.find((dd) => dd._id === d._id)));
   }
 
   accountItem = await removeAccount(accountItem._id);
+
   assert(!accountItem.routeMatchGroups.some((routeMatchGroup) => routeMatchGroup === routeMatchGroupItem._id));
   assert(accountItem);
   await removeAccount(accountItem2._id);

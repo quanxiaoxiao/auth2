@@ -44,8 +44,11 @@ export default (routeMatchGroup) => {
     },
   )
     .then(
-      () => {},
-      () => {},
+      () => {
+      },
+      (error) => {
+        console.warn(error);
+      },
     );
 
   dispatch('data.routeMatchGroupList', ret[1]);

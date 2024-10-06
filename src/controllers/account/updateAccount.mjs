@@ -34,6 +34,10 @@ export default async (accountItem, input) => {
         throw createError(403);
       }
     }
+    if (data.routeMatchGroups.length !== Array.from(new Set(data.routeMatchGroups)).length) {
+      logger.warn(`\`account:${accountItem._id}\` update fail, routeMatchGroups \`${data.routeMatchGroups}\` is repeat`);
+      throw createError(403);
+    }
   }
 
   const accountItemNext = await AccountModel.findOneAndUpdate(

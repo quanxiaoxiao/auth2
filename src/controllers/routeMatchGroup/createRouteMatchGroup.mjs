@@ -3,6 +3,7 @@ import { sort } from '@quanxiaoxiao/list';
 import { RouteMatchGroup as RouteMatchGroupModel } from '../../models/index.mjs';
 import logger from '../../logger.mjs';
 import store from '../../store/store.mjs';
+import getRouteMatchGroupByName from './getRouteMatchGroupByName.mjs';
 import getRouteMatchById from '../routeMatch/getRouteMatchById.mjs';
 
 const { dispatch } = store;
@@ -20,8 +21,12 @@ export default async (input) => {
   const routeMatchGroupItem = new RouteMatchGroupModel({
     ...input,
   });
-  logger.warn(`createRouteMatchGroup \`${JSON.stringify(input)}\``);
+  if (getRouteMatchGroupByName(routeMatchGroupItem.name)) {
+    logger.warn(`create routeMatchGroup fail, name \`${routeMatchGroupItem.name}\` already set`);
+    throw createError(403);
+  }
   await routeMatchGroupItem.save();
+  logger.warn(`create routeMatchGroup \`${JSON.stringify(input)}\``);
 
   const data = {
     _id: routeMatchGroupItem._id.toString(),
