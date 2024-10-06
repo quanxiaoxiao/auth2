@@ -1,13 +1,12 @@
 import createError from 'http-errors';
-import updateRouteMatchGroupsToStore from '../../providers/updateRouteMatchGroupsToStore.mjs';
 import routeMatchType from '../../types/routeMatch.mjs';
-import queryRouteMatches from './queryRouteMatches.mjs';
-import createRouteMatch from './createRouteMatch.mjs';
-import findRouteMatch from './findRouteMatch.mjs';
-import updateRouteMatch from './updateRouteMatch.mjs';
-import removeRouteMatch from './removeRouteMatch.mjs';
-import sortRouteMatches from './sortRouteMatches.mjs';
-import getAccountRouteMatches from './getAccountRouteMatches.mjs';
+import queryAccountById from '../../controllers/account/queryAccountById.mjs';
+import updateRouteMatch from '../../controllers/routeMatch/updateRouteMatch.mjs';
+import removeRouteMatch from '../../controllers/routeMatch/removeRouteMatch.mjs';
+import getRouteMatchesByAccount from '../../controllers/routeMatch/getRouteMatchesByAccount.mjs';
+import getRouteMatchById from '../../controllers/routeMatch/getRouteMatchById.mjs';
+import createRouteMatch from '../../controllers/routeMatch/createRouteMatch.mjs';
+import getRouteMatches from '../../controllers/routeMatch/getRouteMatches.mjs';
 
 export default {
   '/authapi/routematches': {
@@ -16,7 +15,7 @@ export default {
       properties: routeMatchType,
     },
     get: async (ctx) => {
-      const routeMatchList = await queryRouteMatches({});
+      const routeMatchList = await getRouteMatches();
       ctx.response = {
         data: routeMatchList,
       };
@@ -28,31 +27,14 @@ export default {
       properties: routeMatchType,
     },
     get: async (ctx) => {
-      const routeMatchList = await getAccountRouteMatches(ctx.request.params.account);
+      const accountItem = await queryAccountById(ctx.request.params.account);
+      if (!accountItem) {
+        throw createError(404);
+      }
+      const routeMatchList = getRouteMatchesByAccount(accountItem);
       ctx.response = {
         data: routeMatchList,
       };
-    },
-  },
-  '/authapi/routematches/sort': {
-    select: {
-      type: 'array',
-      properties: ['_id', { type: 'string' }],
-    },
-    put: {
-      validate: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-        minItems: 1,
-      },
-      fn: async (ctx) => {
-        const routeMatchList = await sortRouteMatches(ctx.request.data);
-        ctx.response = {
-          data: routeMatchList,
-        };
-      },
     },
   },
   '/authapi/routematch': {
@@ -66,7 +48,6 @@ export default {
         properties: {
           path: {
             type: 'string',
-            pattern: '^/',
           },
           value: {
             type: 'integer',
@@ -93,26 +74,18 @@ export default {
       },
     },
   },
-  '/authapi/routematch/:_id': {
+  '/authapi/routematch/:routeMatch': {
     select: {
       type: 'object',
       properties: routeMatchType,
     },
-    onPre: async (ctx) => {
-      const routeMatchItem = await findRouteMatch(ctx.request.params._id);
+    get: async (ctx) => {
+      const routeMatchItem = await getRouteMatchById(ctx.request.params.routeMatch);
       if (!routeMatchItem) {
         throw createError(404);
       }
-      ctx.routeMatchItem = routeMatchItem;
-    },
-    onPost: (ctx) => {
-      if (ctx.response.data && ['PUT', 'DELETE'].includes(ctx.request.method)) {
-        updateRouteMatchGroupsToStore();
-      }
-    },
-    get: (ctx) => {
       ctx.response = {
-        data: ctx.routeMatchItem,
+        data: routeMatchItem,
       };
     },
     put: {
@@ -121,7 +94,6 @@ export default {
         properties: {
           path: {
             type: 'string',
-            pattern: '^/',
           },
           value: {
             type: 'integer',
@@ -141,18 +113,24 @@ export default {
       },
       fn: async (ctx) => {
         const routeMatchItem = await updateRouteMatch(
-          ctx.routeMatchItem,
+          ctx.request.params.routeMatch,
           ctx.request.data,
         );
+        if (!routeMatchItem) {
+          throw createError(404);
+        }
         ctx.response = {
           data: routeMatchItem,
         };
       },
     },
     delete: async (ctx) => {
-      await removeRouteMatch(ctx.routeMatchItem);
+      const routeMatchItem = await removeRouteMatch(ctx.request.params.routeMatch);
+      if (!routeMatchItem) {
+        throw createError(404);
+      }
       ctx.response = {
-        data: ctx.routeMatchItem,
+        data: routeMatchItem,
       };
     },
   },

@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { waitFor } from '@quanxiaoxiao/utils';
 import {
   createRouteMatch,
   getRouteMatches,
@@ -7,7 +8,9 @@ import {
   createRouteMatchGroup,
   removeRouteMatch,
   getAccount,
+  getRouteMatchGroups,
   getRouteMatch,
+  getAccountByUsername,
   updateRouteMatchGroup,
   getRouteMatchGroup,
   removeRouteMatchGroup,
@@ -15,7 +18,7 @@ import {
 
 const pipeline = async () => {
   let routeMatchItem = await createRouteMatch({
-    path: 'aaa',
+    path: '/(.*)?/aaa',
   });
 
   assert(!routeMatchItem);
@@ -75,6 +78,14 @@ const pipeline = async () => {
   });
   assert(routeMatchGroupItem);
   assert(routeMatchGroupItem.routeMatches[0] === routeMatchItem._id);
+
+  {
+    let ret = await getAccountByUsername('test_aaa');
+    if (ret) {
+      ret = await removeAccount(ret._id);
+      assert(ret != null);
+    }
+  }
 
   let accountItem = await createAccount({
     username: 'test_aaa',
@@ -141,7 +152,14 @@ const pipeline = async () => {
   await removeAccount(accountItem2._id);
 
   routeMatchGroupItem = await removeRouteMatchGroup(routeMatchGroupItem._id);
+
+  const routeMatchGroupList = await getRouteMatchGroups();
+
+  assert(!routeMatchGroupList.find((d) => d._id === routeMatchGroupItem._id));
+
   assert(routeMatchGroupItem);
+  await waitFor(200);
+
   accountItem = await getAccount(accountItem._id);
   assert(accountItem);
 

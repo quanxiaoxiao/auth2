@@ -10,6 +10,10 @@ const initialState = {
     port: select({ type: 'integer' })(process.env.SERVER_PORT),
   },
   routeMatchGroups: {},
+  data: {
+    routeMatchGroupList: [],
+    routeMatchList: [],
+  },
   cipher: null,
   session: {
     dateTimeExpired: select({ type: 'integer' })(process.env.SESSION_TIME_EXPIRED) || 1000 * 60 * 20,

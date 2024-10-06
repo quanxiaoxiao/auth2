@@ -1,11 +1,11 @@
 import createError from 'http-errors';
 import accountType from '../../types/account.mjs';
-import queryAccounts from './queryAccounts.mjs';
-import findAccountByUsername from './findAccountByUsername.mjs';
-import findAccount from './findAccount.mjs';
-import removeAccount from './removeAccount.mjs';
-import createAccount from './createAccount.mjs';
-import updateAccount from './updateAccount.mjs';
+import queryAccounts from '../../controllers/account/queryAccounts.mjs';
+import queryAccountById from '../../controllers/account/queryAccountById.mjs';
+import queryAccountByUsername from '../../controllers/account/queryAccountByUsername.mjs';
+import removeAccount from '../../controllers/account/removeAccount.mjs';
+import createAccount from '../../controllers/account/createAccount.mjs';
+import updateAccount from '../../controllers/account/updateAccount.mjs';
 
 export default {
   '/api/account': {
@@ -37,7 +37,7 @@ export default {
       },
     },
     get: async (ctx) => {
-      const accountItem = await findAccountByUsername(ctx.request.query.username);
+      const accountItem = await queryAccountByUsername(ctx.request.query.username);
       if (!accountItem) {
         throw createError(404);
       }
@@ -185,13 +185,13 @@ export default {
       };
     },
   },
-  '/authapi/account/:_id': {
+  '/authapi/account/:account': {
     select: {
       type: 'object',
       properties: accountType,
     },
     onPre: async (ctx) => {
-      const accountItem = await findAccount(ctx.request.params._id);
+      const accountItem = await queryAccountById(ctx.request.params.account);
       if (!accountItem) {
         throw createError(404);
       }

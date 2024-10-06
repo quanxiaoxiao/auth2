@@ -1,12 +1,10 @@
 import createError from 'http-errors';
-import updateRouteMatchGroupsToStore from '../../providers/updateRouteMatchGroupsToStore.mjs';
 import routeMatchGroupType from '../../types/routeMatchGroup.mjs';
-import queryRouteMatchGroups from './queryRouteMatchGroups.mjs';
-import createRouteMatchGroup from './createRouteMatchGroup.mjs';
-import findRouteMatchGroup from './findRouteMatchGroup.mjs';
-import updateRouteMatchGroup from './updateRouteMatchGroup.mjs';
-import removeRouteMatchGroup from './removeRouteMatchGroup.mjs';
-import sortRouteMatchGroups from './sortRouteMatchGroups.mjs';
+import getRouteMatchGroups from '../../controllers/routeMatchGroup/getRouteMatchGroups.mjs';
+import getRouteMatchGroupById from '../../controllers/routeMatchGroup/getRouteMatchGroupById.mjs';
+import removeRouteMatchGroup from '../../controllers/routeMatchGroup/removeRouteMatchGroup.mjs';
+import createRouteMatchGroup from '../../controllers/routeMatchGroup/createRouteMatchGroup.mjs';
+import updateRouteMatchGroup from '../../controllers/routeMatchGroup/updateRouteMatchGroup.mjs';
 
 export default {
   '/authapi/routematchgroups': {
@@ -14,43 +12,17 @@ export default {
       type: 'array',
       properties: routeMatchGroupType,
     },
-    get: async (ctx) => {
-      const routematchgroupList = await queryRouteMatchGroups({});
+    get: (ctx) => {
+      const routematchgroupList = getRouteMatchGroups();
       ctx.response = {
         data: routematchgroupList,
       };
-    },
-  },
-  '/authapi/routematchgroups/sort': {
-    select: {
-      type: 'array',
-      properties: ['_id', { type: 'string' }],
-    },
-    put: {
-      validate: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-        minItems: 1,
-      },
-      fn: async (ctx) => {
-        const routeMatchGroupList = await sortRouteMatchGroups(ctx.request.data);
-        ctx.response = {
-          data: routeMatchGroupList,
-        };
-      },
     },
   },
   '/authapi/routematchgroup': {
     select: {
       type: 'object',
       properties: routeMatchGroupType,
-    },
-    onPost: (ctx) => {
-      if (ctx.response.data && ctx.request.method === 'POST') {
-        updateRouteMatchGroupsToStore();
-      }
     },
     post: {
       validate: {
@@ -90,32 +62,27 @@ export default {
       },
     },
   },
-  '/authapi/routematchgroup/:_id': {
+  '/authapi/routematchgroup/:routeMatchGroup': {
     select: {
       type: 'object',
       properties: routeMatchGroupType,
     },
-    onPre: async (ctx) => {
-      const routeMatchGroupItem = await findRouteMatchGroup(ctx.request.params._id);
+    get: (ctx) => {
+      const routeMatchGroupItem = getRouteMatchGroupById(ctx.request.params.routeMatchGroup);
       if (!routeMatchGroupItem) {
         throw createError(404);
       }
-      ctx.routeMatchGroupItem = routeMatchGroupItem;
-    },
-    onPost: (ctx) => {
-      if (ctx.response.data && ['DELETE', 'PUT'].includes(ctx.request.method)) {
-        updateRouteMatchGroupsToStore();
-      }
-    },
-    get: (ctx) => {
       ctx.response = {
-        data: ctx.routeMatchGroupItem,
+        data: routeMatchGroupItem,
       };
     },
     delete: async (ctx) => {
-      await removeRouteMatchGroup(ctx.routeMatchGroupItem);
+      const routeMatchGroupItem = await removeRouteMatchGroup(ctx.request.params.routeMatchGroup);
+      if (!routeMatchGroupItem) {
+        throw createError(404);
+      }
       ctx.response = {
-        data: ctx.routeMatchGroupItem,
+        data: routeMatchGroupItem,
       };
     },
     put: {
@@ -146,7 +113,10 @@ export default {
         additionalProperties: false,
       },
       fn: async (ctx) => {
-        const routeMatchGroupItem = await updateRouteMatchGroup(ctx.routeMatchGroupItem, ctx.request.data);
+        const routeMatchGroupItem = await updateRouteMatchGroup(
+          ctx.request.params.routeMatchGroup,
+          ctx.request.data,
+        );
         if (!routeMatchGroupItem) {
           throw createError(404);
         }

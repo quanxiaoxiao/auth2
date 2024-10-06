@@ -317,6 +317,19 @@ export const getRouteMatchGroup = async (routeMatchGroup) => {
   return null;
 };
 
+export const getRouteMatchGroups = async () => {
+  const requestRet = await httpRequest({
+    path: '/authapi/routematchgroups',
+    method: 'GET',
+    body: null,
+  });
+  if (requestRet.statusCode === 200) {
+    const data = decodeContentToJSON(requestRet.body, requestRet.headers);
+    return data;
+  }
+  return null;
+};
+
 export const removeRouteMatchGroup = async (routeMatchGroup) => {
   const requestRet = await httpRequest({
     path: `/authapi/routematchgroup/${routeMatchGroup}`,

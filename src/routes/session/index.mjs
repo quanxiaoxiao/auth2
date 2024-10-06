@@ -1,14 +1,14 @@
 import createError from 'http-errors';
 import sessionType, { routeMatchesSession as routeMatchesSessionType } from '../../types/session.mjs';
-import findSession from './findSession.mjs';
-import createSessionByUsernameAndPassword from './createSessionByUsernameAndPassword.mjs';
-import checkSessionValid from './checkSessionValid.mjs';
-import getSessionByRequest from './getSessionByRequest.mjs';
-import removeSession from './removeSession.mjs';
-import updateSession from './updateSession.mjs';
-import querySessions from './querySessions.mjs';
-import attachSessionWithRouteMatches from './attachSessionWithRouteMatches.mjs';
-import createSessionByAccount from './createSessionByAccount.mjs';
+import getRouteMatchesByAccount from '../../controllers/routeMatch/getRouteMatchesByAccount.mjs';
+import querySessionById from '../../controllers/session/querySessionById.mjs';
+import createSessionByUsernameAndPassword from '../../controllers/session/createSessionByUsernameAndPassword.mjs';
+import checkSessionValid from '../../controllers/session/checkSessionValid.mjs';
+import getSessionByRequest from '../../controllers/session/getSessionByRequest.mjs';
+import removeSession from '../../controllers/session/removeSession.mjs';
+import updateSession from '../../controllers/session/updateSession.mjs';
+import querySessions from '../../controllers/session/querySessions.mjs';
+import createSessionByAccount from '../../controllers/session/createSessionByAccount.mjs';
 
 export default {
   '/api/session': {
@@ -22,7 +22,7 @@ export default {
         if (!session) {
           throw createError(404);
         }
-        const sessionItem = await findSession(session);
+        const sessionItem = await querySessionById(session);
         if (!sessionItem || !sessionItem.account) {
           throw createError(404);
         }
@@ -31,9 +31,10 @@ export default {
       }
     },
     get: (ctx) => {
-      attachSessionWithRouteMatches(ctx.sessionItem);
+      const routeMatchList = getRouteMatchesByAccount(ctx.sessionItem.account);
+      ctx.sessionItem.routeMatches = routeMatchList;
       ctx.response = {
-        data: attachSessionWithRouteMatches(ctx.sessionItem),
+        data: ctx.sessionItem,
       };
     },
     post: {
@@ -60,8 +61,10 @@ export default {
         if (!sessionItem) {
           throw createError(404);
         }
+        const routeMatchList = getRouteMatchesByAccount(sessionItem.account);
+        sessionItem.routeMatches = routeMatchList;
         ctx.response = {
-          data: attachSessionWithRouteMatches(sessionItem),
+          data: sessionItem,
         };
       },
     },
@@ -188,7 +191,7 @@ export default {
       properties: sessionType,
     },
     onPre: async (ctx) => {
-      const sessionItem = await findSession(ctx.request.params._id);
+      const sessionItem = await querySessionById(ctx.request.params._id);
       if (!sessionItem) {
         throw createError(404);
       }

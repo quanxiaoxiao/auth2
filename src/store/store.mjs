@@ -1,4 +1,4 @@
-import createStore from '@quanxiaoxiao/store';
+import { createStore } from '@quanxiaoxiao/store';
 import initialState from './initialState.mjs';
 import attachCipher from './attachCipher.mjs';
 
