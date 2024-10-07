@@ -1,4 +1,3 @@
-import { parseCookie } from '@quanxiaoxiao/http-utils';
 import { decodeSession } from '../../providers/session.mjs';
 import store from '../../store/store.mjs';
 
@@ -9,7 +8,7 @@ const getToken = (request) => {
   if (Object.hasOwnProperty.call(request.headers, sessionAuthKey)) {
     return request.headers[sessionAuthKey];
   }
-  return parseCookie(request.headers.cookie)[sessionAuthKey];
+  return null;
 };
 
 export default (request) => {

@@ -22,10 +22,6 @@ const store = createStore({
       type: 'integer',
       minimum: 1000 * 60 * 20,
     },
-    'session.key': {
-      type: 'string',
-      minLength: 1,
-    },
     'session.authKey': {
       type: 'string',
       minLength: 1,
