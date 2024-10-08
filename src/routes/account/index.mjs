@@ -18,6 +18,9 @@ export default {
         username: {
           type: 'string',
         },
+        avatar: {
+          type: 'string',
+        },
       },
     },
     query: {
@@ -65,6 +68,7 @@ export default {
           },
           password: {
             type: 'string',
+            nullable: true,
           },
           type: {
             type: 'integer',
@@ -96,7 +100,7 @@ export default {
             nullable: true,
           },
         },
-        required: ['username', 'password'],
+        required: ['username'],
         additionalProperties: false,
       },
       fn: async (ctx) => {
@@ -138,6 +142,15 @@ export default {
         resolve: (v) => {
           if (!v) {
             return 'dateTimeCreate';
+          }
+          return v;
+        },
+      },
+      info: {
+        type: 'string',
+        resolve: (v) => {
+          if (!v) {
+            return null;
           }
           return v;
         },

@@ -1,3 +1,4 @@
+import assert from 'node:assert';
 import _ from 'lodash';
 import createError from 'http-errors';
 import logger from '../../logger.mjs';
@@ -21,7 +22,8 @@ export default async (accountItem, input) => {
     },
   };
 
-  if (data.password) {
+  if (Object.hasOwnProperty.call(data, 'password')) {
+    assert(!!data.password);
     data.password = hmac(data.password);
     data.dateTimeUpdateWithPassword = now;
   }

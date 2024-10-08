@@ -12,7 +12,7 @@ export default async (input) => {
   const data = {
     ...input,
     username: input.username.trim(),
-    password: hmac(input.password),
+    password: input.password ? hmac(input.password) : null,
     type: input.type == null ? ACCOUNT_TYPE_MANUAL : input.type,
   };
   const matched = await AccountModel.findOne({

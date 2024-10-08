@@ -1,3 +1,4 @@
+import assert from 'node:assert';
 import createError from 'http-errors';
 import _ from 'lodash';
 import logger from '../../logger.mjs';
@@ -12,6 +13,7 @@ export default async (input) => {
     password,
     userAgent,
   } = input;
+  assert(password);
   const mac = hmac(password);
   const accountItem = await AccountModel.findOne({
     username,

@@ -12,7 +12,6 @@ export default new Schema({
   },
   password: {
     type: String,
-    required: true,
     index: true,
   },
   avatar: {
@@ -40,7 +39,7 @@ export default new Schema({
   },
   dateTimeUpdateWithPassword: {
     type: Number,
-    default: Date.now,
+    default: null,
   },
   dateTimeExpired: {
     type: Number,
