@@ -4,6 +4,7 @@ import {
   updateAccount,
   createSession,
   getSessionValid,
+  getSession,
   getAccountByUsername,
   removeAccount,
   createSessionByAccount,
@@ -72,16 +73,13 @@ const token1 = sessionItem.token;
   assert(!validate);
 }
 
-/*
 {
   const ret = await getSession(sessionItem._id);
-  console.log(ret);
   const now = Date.now();
   assert(ret);
   assert(now > ret.dateTimeExpired);
   assert.equal(ret._id, sessionItem._id);
 }
-*/
 
 sessionItem  = await createSession({
   username,

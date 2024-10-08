@@ -15,12 +15,6 @@ export default async (accountItem, input) => {
     ...input,
     dateTimeUpdate: now,
   };
-  const query = {
-    _id: accountItem._id,
-    invalid: {
-      $ne: true,
-    },
-  };
 
   if (Object.hasOwnProperty.call(data, 'password')) {
     assert(!!data.password);
@@ -43,7 +37,12 @@ export default async (accountItem, input) => {
   }
 
   const accountItemNext = await AccountModel.findOneAndUpdate(
-    query,
+    {
+      _id: accountItem._id,
+      invalid: {
+        $ne: true,
+      },
+    },
     {
       $set: data,
     },
@@ -56,7 +55,24 @@ export default async (accountItem, input) => {
     throw createError(404);
   }
 
-  if (accountItemNext.dateTimeExpired != null) {
+  if (Object.hasOwnProperty.call(data, 'password')) {
+    await SessionModel.updateMany(
+      {
+        account: accountItem._id,
+        invalid: {
+          $ne: true,
+        },
+        dateTimeExpired: {
+          $gt: now,
+        },
+      },
+      {
+        $set: {
+          dateTimeExpired: now,
+        },
+      },
+    );
+  } else if (accountItemNext.dateTimeExpired != null) {
     if (accountItemNext.dateTimeExpired < now) {
       await SessionModel.updateMany(
         {
