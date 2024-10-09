@@ -197,7 +197,7 @@ export const removeAccount = async (account) => {
 export const getAccountSessions = async (account) => {
   const requestRet = await httpRequest({
     method: 'GET',
-    path: `/authapi/sessions?account=${account}`,
+    path: `/authapi/sessions?account=${account}&limit=9999`,
     body: null,
   });
   assert(requestRet.statusCode === 200);
