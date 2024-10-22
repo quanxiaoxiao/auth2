@@ -15,6 +15,7 @@ export default async (input) => {
     password: input.password ? hmac(input.password) : null,
     type: input.type == null ? ACCOUNT_TYPE_MANUAL : input.type,
   };
+
   const matched = await AccountModel.findOne({
     username: data.username,
     invalid: {
@@ -42,6 +43,10 @@ export default async (input) => {
   } else {
     const routeMatchGroupList = getRouteMatchGroupsByDefaultWithSet();
     data.routeMatchGroups = routeMatchGroupList.map((d) => new mongoose.Types.ObjectId(d._id));
+  }
+
+  if (!data.nickName) {
+    data.nickName = data.username;
   }
 
   const accountItem = new AccountModel(data);

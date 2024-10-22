@@ -5,6 +5,9 @@ export default {
   username: {
     type: 'string',
   },
+  nickName: {
+    type: 'string',
+  },
   type: {
     type: 'integer',
   },

@@ -55,6 +55,9 @@ export const routeMatchesSession = {
       _id: {
         type: 'string',
       },
+      nickName: {
+        type: 'string',
+      },
       username: {
         type: 'string',
       },

@@ -66,6 +66,10 @@ export default {
               pattern: '^\\s+$',
             },
           },
+          nickName: {
+            type: 'string',
+            nullable: true,
+          },
           password: {
             type: 'string',
             nullable: true,
@@ -226,6 +230,10 @@ export default {
         type: 'object',
         properties: {
           description: {
+            type: 'string',
+            nullable: true,
+          },
+          nickName: {
             type: 'string',
             nullable: true,
           },

@@ -10,6 +10,10 @@ export default new Schema({
     match: /^\w{2,500}$/,
     index: true,
   },
+  nickName: {
+    type: String,
+    default: '',
+  },
   password: {
     type: String,
     index: true,

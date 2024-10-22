@@ -3,6 +3,7 @@ logger
 *.log
 *.tar
 .DS_store
+avatar/*
 .env
 .state.json
 _index.mjs
