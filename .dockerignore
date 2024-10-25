@@ -1,7 +1,6 @@
 .git
 logger
 Dockerfile
-node_modules
 eslint.config.mjs
 docker-compose.yml
 .env
