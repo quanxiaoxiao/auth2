@@ -1,7 +1,5 @@
 import { pathToRegexp } from 'path-to-regexp';
-import store from '../../store/store.mjs';
-
-const { getState } = store;
+import { getState } from '../../store/store.mjs';
 
 export default (pathname) => {
   const { routeMatchList } = getState().data;

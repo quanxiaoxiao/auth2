@@ -2,9 +2,7 @@ import {
   createCipheriv,
   createDecipheriv,
 } from 'node:crypto';
-import store from '../store/store.mjs';
-
-const { getState } = store;
+import { getState } from '../store/store.mjs';
 
 export const encode = (str) => {
   const cipher = createCipheriv(

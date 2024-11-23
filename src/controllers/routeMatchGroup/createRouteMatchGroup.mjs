@@ -2,11 +2,9 @@ import createError from 'http-errors';
 import { sort } from '@quanxiaoxiao/list';
 import { RouteMatchGroup as RouteMatchGroupModel } from '../../models/index.mjs';
 import logger from '../../logger.mjs';
-import store from '../../store/store.mjs';
+import { dispatch } from '../../store/store.mjs';
 import getRouteMatchGroupByName from './getRouteMatchGroupByName.mjs';
 import getRouteMatchById from '../routeMatch/getRouteMatchById.mjs';
-
-const { dispatch } = store;
 
 export default async (input) => {
   if (Array.isArray(input.routeMatches)) {

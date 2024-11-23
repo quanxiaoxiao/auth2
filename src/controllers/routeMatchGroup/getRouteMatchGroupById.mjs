@@ -1,7 +1,5 @@
 import { find } from '@quanxiaoxiao/list';
-import store from '../../store/store.mjs';
-
-const { getState } = store;
+import { getState } from '../../store/store.mjs';
 
 export default (routeMatchGroup) => {
   const routeMatchGroupItem = find(getState().data.routeMatchGroupList)(routeMatchGroup);

@@ -1,10 +1,8 @@
 import { sort } from '@quanxiaoxiao/list';
 import logger from '../../logger.mjs';
 import { RouteMatch as RouteMatchModel } from '../../models/index.mjs';
-import store from '../../store/store.mjs';
+import { dispatch } from '../../store/store.mjs';
 import checkPathValidate from './checkPathValidate.mjs';
-
-const { dispatch } = store;
 
 export default async (input) => {
   checkPathValidate(input.path);

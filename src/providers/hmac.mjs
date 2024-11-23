@@ -1,7 +1,5 @@
 import { createHmac } from 'node:crypto';
-import store from '../store/store.mjs';
-
-const { getState } = store;
+import { getState } from '../store/store.mjs';
 
 export default (str) => createHmac('sha256', getState().cipher.secret)
   .update(str)

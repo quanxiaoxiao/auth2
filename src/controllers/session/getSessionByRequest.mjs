@@ -1,7 +1,5 @@
 import { decodeSession } from '../../providers/session.mjs';
-import store from '../../store/store.mjs';
-
-const { getState } = store;
+import { getState } from '../../store/store.mjs';
 
 const getToken = (request) => {
   const sessionAuthKey = getState().session.authKey;

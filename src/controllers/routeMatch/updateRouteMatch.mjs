@@ -3,9 +3,7 @@ import { update } from '@quanxiaoxiao/list';
 import logger from '../../logger.mjs';
 import { RouteMatch as RouteMatchModel } from '../../models/index.mjs';
 import checkPathValidate from './checkPathValidate.mjs';
-import store from '../../store/store.mjs';
-
-const { getState, dispatch } = store;
+import { getState, dispatch } from '../../store/store.mjs';
 
 export default (routeMatch, input) => {
   if (Object.hasOwnProperty.call(input, 'path')) {

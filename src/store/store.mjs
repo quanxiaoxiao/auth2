@@ -2,7 +2,7 @@ import { createStore } from '@quanxiaoxiao/store';
 import initialState from './initialState.mjs';
 import attachCipher from './attachCipher.mjs';
 
-const store = createStore({
+const { getState, dispatch } = createStore({
   initialState: attachCipher(initialState)({
     secret: process.env.CIPHER_SECRET,
     algorithm: process.env.CIPHER_ALGORITHM,
@@ -30,4 +30,7 @@ const store = createStore({
   middlewares: [],
 });
 
-export default store;
+export {
+  getState,
+  dispatch,
+};

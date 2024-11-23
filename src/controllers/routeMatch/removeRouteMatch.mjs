@@ -6,9 +6,7 @@ import {
   RouteMatch as RouteMatchModel,
 } from '../../models/index.mjs';
 import logger from '../../logger.mjs';
-import store from '../../store/store.mjs';
-
-const { dispatch, getState } = store;
+import { getState, dispatch } from '../../store/store.mjs';
 
 export default (routeMatch) => {
   const ret = remove(getState().data.routeMatchList)(routeMatch);

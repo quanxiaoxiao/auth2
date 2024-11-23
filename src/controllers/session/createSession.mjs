@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import createError from 'http-errors';
-import store from '../../store/store.mjs';
+import { getState } from '../../store/store.mjs';
 import { Session as SessionModel } from '../../models/index.mjs';
 import calcAccountHash from '../../providers/calcAccountHash.mjs';
 import querySessionById from './querySessionById.mjs';
-
-const { getState } = store;
 
 export default async (accountItem, {
   remoteAddress,

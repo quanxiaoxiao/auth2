@@ -2,10 +2,8 @@ import createError from 'http-errors';
 import { update } from '@quanxiaoxiao/list';
 import { RouteMatchGroup as RouteMatchGroupModel } from '../../models/index.mjs';
 import logger from '../../logger.mjs';
-import store from '../../store/store.mjs';
+import { getState, dispatch } from '../../store/store.mjs';
 import getRouteMatchById from '../routeMatch/getRouteMatchById.mjs';
-
-const { dispatch, getState } = store;
 
 export default (routeMatchGroup, input) => {
   if (input.routeMatches) {

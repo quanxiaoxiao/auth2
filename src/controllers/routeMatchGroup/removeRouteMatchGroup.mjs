@@ -6,9 +6,7 @@ import {
   Account as AccountModel,
 } from '../../models/index.mjs';
 import logger from '../../logger.mjs';
-import store from '../../store/store.mjs';
-
-const { dispatch, getState } = store;
+import { dispatch, getState } from '../../store/store.mjs';
 
 export default (routeMatchGroup) => {
   const ret = remove(getState().data.routeMatchGroupList)(routeMatchGroup);
