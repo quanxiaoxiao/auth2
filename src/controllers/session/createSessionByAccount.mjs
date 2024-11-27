@@ -5,7 +5,10 @@ import { SESSION_TYPE_MANUAL } from '../../constants.mjs';
 import { Account as AccountModel } from '../../models/index.mjs';
 import createSession from './createSession.mjs';
 
-export default async (input) => {
+export default async (input, {
+  userAgent,
+  remoteAddress,
+}) => {
   const { account, dateTimeExpired } = input;
   if (!isValidObjectId(account)) {
     throw createError(404);
@@ -22,6 +25,8 @@ export default async (input) => {
   const sessionItem = await createSession(accountItem, {
     type: SESSION_TYPE_MANUAL,
     dateTimeExpired,
+    userAgent,
+    remoteAddress,
   });
 
   logger.warn(`create session by account \`${JSON.stringify(input)}\``);

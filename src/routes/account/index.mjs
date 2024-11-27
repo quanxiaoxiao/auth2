@@ -50,9 +50,32 @@ export default {
     },
   },
   '/authapi/account': {
+    query: {
+      username: {
+        type: 'string',
+        resolve: (v) => {
+          if (!v) {
+            return '';
+          }
+          return v.trim();
+        },
+      },
+    },
     select: {
       type: 'object',
       properties: accountType,
+    },
+    get: async (ctx) => {
+      if (!ctx.request.query.username) {
+        throw createError(400);
+      }
+      const accountItem = await queryAccountByUsername(ctx.request.query.username);
+      if (!accountItem) {
+        throw createError(404);
+      }
+      ctx.response = {
+        data: accountItem,
+      };
     },
     post: {
       validate: {

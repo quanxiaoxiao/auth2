@@ -175,7 +175,11 @@ export default {
         additionalProperties: false,
       },
       fn: async (ctx) => {
-        const sessionItem = await createSessionByAccount(ctx.request.data);
+        const remoteAddress = ctx.request.headers['x-remote-address'] || ctx.socket.remoteAddress;
+        const sessionItem = await createSessionByAccount(ctx.request.data, {
+          userAgent: ctx.request.headers['user-agent'] || null,
+          remoteAddress,
+        });
         if (!sessionItem) {
           throw createError(404);
         }
