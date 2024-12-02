@@ -1,0 +1,16 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: auth
+    networks:
+      - quan
+    restart: always
+    volumes:
+      - "./.env:/app/.env"
+      - "./logger:/app/logger"
+      - "./scripts:/app/scripts"
+      - "./node_modules:/app/node_modules"
+networks:
+  quan:
+    external: true
