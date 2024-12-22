@@ -1,12 +1,13 @@
 import createError from 'http-errors';
-import routeMatchType from '../../types/routeMatch.mjs';
+
 import queryAccountById from '../../controllers/account/queryAccountById.mjs';
-import updateRouteMatch from '../../controllers/routeMatch/updateRouteMatch.mjs';
-import removeRouteMatch from '../../controllers/routeMatch/removeRouteMatch.mjs';
-import getRouteMatchesByAccount from '../../controllers/routeMatch/getRouteMatchesByAccount.mjs';
-import getRouteMatchById from '../../controllers/routeMatch/getRouteMatchById.mjs';
 import createRouteMatch from '../../controllers/routeMatch/createRouteMatch.mjs';
+import getRouteMatchById from '../../controllers/routeMatch/getRouteMatchById.mjs';
 import getRouteMatches from '../../controllers/routeMatch/getRouteMatches.mjs';
+import getRouteMatchesByAccount from '../../controllers/routeMatch/getRouteMatchesByAccount.mjs';
+import removeRouteMatch from '../../controllers/routeMatch/removeRouteMatch.mjs';
+import updateRouteMatch from '../../controllers/routeMatch/updateRouteMatch.mjs';
+import routeMatchType from '../../types/routeMatch.mjs';
 
 export default {
   '/authapi/routematches': {

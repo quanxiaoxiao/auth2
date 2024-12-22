@@ -1,5 +1,5 @@
-import getRouteMatchById from './getRouteMatchById.mjs';
 import getRouteMatchGroupById from '../routeMatchGroup/getRouteMatchGroupById.mjs';
+import getRouteMatchById from './getRouteMatchById.mjs';
 
 export default (accountItem) => {
   const routeMatchList = Array.from(new Set(accountItem

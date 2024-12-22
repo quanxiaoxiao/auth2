@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import createError from 'http-errors';
-import { getState } from '../../store/store.mjs';
+
 import { Session as SessionModel } from '../../models/index.mjs';
 import calcAccountHash from '../../providers/calcAccountHash.mjs';
+import { getState } from '../../store/store.mjs';
 import querySessionById from './querySessionById.mjs';
 
 export default async (accountItem, {

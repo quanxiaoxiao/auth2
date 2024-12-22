@@ -1,5 +1,5 @@
-import { pathToRegexp } from 'path-to-regexp';
 import createError from 'http-errors';
+import { pathToRegexp } from 'path-to-regexp';
 
 export default (path) => {
   try {

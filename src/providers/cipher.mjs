@@ -2,6 +2,7 @@ import {
   createCipheriv,
   createDecipheriv,
 } from 'node:crypto';
+
 import { getState } from '../store/store.mjs';
 
 export const encode = (str) => {

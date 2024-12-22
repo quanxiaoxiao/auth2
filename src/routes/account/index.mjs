@@ -1,11 +1,12 @@
 import createError from 'http-errors';
-import accountType from '../../types/account.mjs';
-import queryAccounts from '../../controllers/account/queryAccounts.mjs';
+
+import createAccount from '../../controllers/account/createAccount.mjs';
 import queryAccountById from '../../controllers/account/queryAccountById.mjs';
 import queryAccountByUsername from '../../controllers/account/queryAccountByUsername.mjs';
+import queryAccounts from '../../controllers/account/queryAccounts.mjs';
 import removeAccount from '../../controllers/account/removeAccount.mjs';
-import createAccount from '../../controllers/account/createAccount.mjs';
 import updateAccount from '../../controllers/account/updateAccount.mjs';
+import accountType from '../../types/account.mjs';
 
 export default {
   '/api/account': {

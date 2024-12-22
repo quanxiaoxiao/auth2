@@ -1,12 +1,14 @@
 import assert from 'node:assert';
-import _ from 'lodash';
+
 import createError from 'http-errors';
+import _ from 'lodash';
+
 import logger from '../../logger.mjs';
-import hmac from '../../providers/hmac.mjs';
 import {
   Account as AccountModel,
   Session as SessionModel,
 } from '../../models/index.mjs';
+import hmac from '../../providers/hmac.mjs';
 import getRouteMatchGroupById from '../routeMatchGroup/getRouteMatchGroupById.mjs';
 
 export default async (accountItem, input) => {

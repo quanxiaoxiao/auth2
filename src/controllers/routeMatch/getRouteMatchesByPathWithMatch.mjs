@@ -1,4 +1,5 @@
 import { pathToRegexp } from 'path-to-regexp';
+
 import { getState } from '../../store/store.mjs';
 
 export default (pathname) => {

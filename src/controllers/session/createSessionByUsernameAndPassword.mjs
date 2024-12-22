@@ -1,10 +1,12 @@
 import assert from 'node:assert';
+
 import createError from 'http-errors';
 import _ from 'lodash';
-import logger from '../../logger.mjs';
+
 import { SESSION_TYPE_LOGIN } from '../../constants.mjs';
-import hmac from '../../providers/hmac.mjs';
+import logger from '../../logger.mjs';
 import { Account as AccountModel } from '../../models/index.mjs';
+import hmac from '../../providers/hmac.mjs';
 import createSession from './createSession.mjs';
 
 export default async (input) => {
