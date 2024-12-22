@@ -1,14 +1,15 @@
 import createError from 'http-errors';
-import sessionType, { routeMatchesSession as routeMatchesSessionType } from '../../types/session.mjs';
+
 import getRouteMatchesByAccount from '../../controllers/routeMatch/getRouteMatchesByAccount.mjs';
-import querySessionById from '../../controllers/session/querySessionById.mjs';
-import createSessionByUsernameAndPassword from '../../controllers/session/createSessionByUsernameAndPassword.mjs';
 import checkSessionValid from '../../controllers/session/checkSessionValid.mjs';
+import createSessionByAccount from '../../controllers/session/createSessionByAccount.mjs';
+import createSessionByUsernameAndPassword from '../../controllers/session/createSessionByUsernameAndPassword.mjs';
 import getSessionByRequest from '../../controllers/session/getSessionByRequest.mjs';
+import querySessionById from '../../controllers/session/querySessionById.mjs';
+import querySessions from '../../controllers/session/querySessions.mjs';
 import removeSession from '../../controllers/session/removeSession.mjs';
 import updateSession from '../../controllers/session/updateSession.mjs';
-import querySessions from '../../controllers/session/querySessions.mjs';
-import createSessionByAccount from '../../controllers/session/createSessionByAccount.mjs';
+import sessionType, { routeMatchesSession as routeMatchesSessionType } from '../../types/session.mjs';
 
 export default {
   '/api/session': {

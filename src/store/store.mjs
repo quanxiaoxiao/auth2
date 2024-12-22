@@ -1,6 +1,7 @@
 import { createStore } from '@quanxiaoxiao/store';
-import initialState from './initialState.mjs';
+
 import attachCipher from './attachCipher.mjs';
+import initialState from './initialState.mjs';
 
 const { getState, dispatch } = createStore({
   initialState: attachCipher(initialState)({
@@ -31,6 +32,6 @@ const { getState, dispatch } = createStore({
 });
 
 export {
-  getState,
   dispatch,
+  getState,
 };

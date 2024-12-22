@@ -1,4 +1,5 @@
 import { isValidObjectId } from '@quanxiaoxiao/mongo';
+
 import { Account as AccountModel } from '../../models/index.mjs';
 
 export default async (account) => {

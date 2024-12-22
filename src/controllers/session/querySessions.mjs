@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
 import { getQuery, isValidObjectId } from '@quanxiaoxiao/mongo';
 import { escapeString } from '@quanxiaoxiao/utils';
+import mongoose from 'mongoose';
+
 import { Session as SessionModel } from '../../models/index.mjs';
 
 export default async ({

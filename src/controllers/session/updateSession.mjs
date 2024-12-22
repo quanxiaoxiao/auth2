@@ -1,8 +1,9 @@
 import createError from 'http-errors';
+
 import logger from '../../logger.mjs';
 import {
-  Session as SessionModel,
   Account as AccountModel,
+  Session as SessionModel,
 } from '../../models/index.mjs';
 import querySessionById from './querySessionById.mjs';
 

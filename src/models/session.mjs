@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+
 import {
-  SESSION_TYPE_UNSET,
   SESSION_TYPE_LOGIN,
   SESSION_TYPE_MANUAL,
+  SESSION_TYPE_UNSET,
 } from '../constants.mjs';
 
 const { Schema } = mongoose;

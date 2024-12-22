@@ -1,12 +1,13 @@
-import mongoose from 'mongoose';
 import { remove } from '@quanxiaoxiao/list';
 import createError from 'http-errors';
-import {
-  RouteMatchGroup as RouteMatchGroupModel,
-  RouteMatch as RouteMatchModel,
-} from '../../models/index.mjs';
+import mongoose from 'mongoose';
+
 import logger from '../../logger.mjs';
-import { getState, dispatch } from '../../store/store.mjs';
+import {
+  RouteMatch as RouteMatchModel,
+  RouteMatchGroup as RouteMatchGroupModel,
+} from '../../models/index.mjs';
+import { dispatch,getState } from '../../store/store.mjs';
 
 export default (routeMatch) => {
   const ret = remove(getState().data.routeMatchList)(routeMatch);

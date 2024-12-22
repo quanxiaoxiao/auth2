@@ -1,10 +1,11 @@
 import createError from 'http-errors';
-import routeMatchGroupType from '../../types/routeMatchGroup.mjs';
-import getRouteMatchGroups from '../../controllers/routeMatchGroup/getRouteMatchGroups.mjs';
-import getRouteMatchGroupById from '../../controllers/routeMatchGroup/getRouteMatchGroupById.mjs';
-import removeRouteMatchGroup from '../../controllers/routeMatchGroup/removeRouteMatchGroup.mjs';
+
 import createRouteMatchGroup from '../../controllers/routeMatchGroup/createRouteMatchGroup.mjs';
+import getRouteMatchGroupById from '../../controllers/routeMatchGroup/getRouteMatchGroupById.mjs';
+import getRouteMatchGroups from '../../controllers/routeMatchGroup/getRouteMatchGroups.mjs';
+import removeRouteMatchGroup from '../../controllers/routeMatchGroup/removeRouteMatchGroup.mjs';
 import updateRouteMatchGroup from '../../controllers/routeMatchGroup/updateRouteMatchGroup.mjs';
+import routeMatchGroupType from '../../types/routeMatchGroup.mjs';
 
 export default {
   '/authapi/routematchgroups': {

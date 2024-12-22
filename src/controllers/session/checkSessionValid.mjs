@@ -1,5 +1,7 @@
 import assert from 'node:assert';
+
 import createError from 'http-errors';
+
 import calcAccountHash from '../../providers/calcAccountHash.mjs';
 
 export default (sessionItem) => {

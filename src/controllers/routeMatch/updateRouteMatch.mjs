@@ -1,9 +1,10 @@
-import createError from 'http-errors';
 import { update } from '@quanxiaoxiao/list';
+import createError from 'http-errors';
+
 import logger from '../../logger.mjs';
 import { RouteMatch as RouteMatchModel } from '../../models/index.mjs';
+import { dispatch,getState } from '../../store/store.mjs';
 import checkPathValidate from './checkPathValidate.mjs';
-import { getState, dispatch } from '../../store/store.mjs';
 
 export default (routeMatch, input) => {
   if (Object.hasOwnProperty.call(input, 'path')) {
