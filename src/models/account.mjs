@@ -7,7 +7,7 @@ export default new Schema({
     type: String,
     required: true,
     trim: true,
-    match: /^\w{2,500}$/,
+    // match: /^\w{2,500}$/,
     index: true,
   },
   nickName: {
