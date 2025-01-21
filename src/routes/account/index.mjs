@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 
 import createAccount from '../../controllers/account/createAccount.mjs';
+import getAccountsByIds from '../../controllers/account/getAccountsByIds.mjs';
 import queryAccountById from '../../controllers/account/queryAccountById.mjs';
 import queryAccountByUsername from '../../controllers/account/queryAccountByUsername.mjs';
 import queryAccounts from '../../controllers/account/queryAccounts.mjs';
@@ -9,6 +10,38 @@ import updateAccount from '../../controllers/account/updateAccount.mjs';
 import accountType from '../../types/account.mjs';
 
 export default {
+  '/api/accounts': {
+    select: {
+      type: 'array',
+      properties: {
+        _id: {
+          type: 'string',
+        },
+        username: {
+          type: 'string',
+        },
+        avatar: {
+          type: 'string',
+        },
+      },
+    },
+    query: {
+      _ids: {
+        type: 'string',
+      },
+    },
+    match: {
+      'query._ids': {
+        $nin: [null, ''],
+      },
+    },
+    get: async (ctx) => {
+      const accountList = await getAccountsByIds(ctx.request.query._ids.split(','));
+      ctx.response = {
+        data: accountList,
+      };
+    },
+  },
   '/api/account': {
     select: {
       type: 'object',

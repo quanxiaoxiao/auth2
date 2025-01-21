@@ -11,7 +11,8 @@ export default async (account) => {
       $ne: true,
     },
     _id: account,
-  });
+  })
+    .lean();
 
   return accountItem;
 };
