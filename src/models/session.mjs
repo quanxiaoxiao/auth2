@@ -8,7 +8,7 @@ import {
 
 const { Schema } = mongoose;
 
-export default new Schema({
+const sessionSchema = new Schema({
   account: {
     type: Schema.Types.ObjectId,
     ref: 'Account',
@@ -56,3 +56,5 @@ export default new Schema({
     type: Number,
   },
 });
+
+export default sessionSchema;

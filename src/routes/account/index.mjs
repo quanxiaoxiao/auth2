@@ -20,6 +20,9 @@ export default {
         username: {
           type: 'string',
         },
+        nickName: {
+          type: 'string',
+        },
         avatar: {
           type: 'string',
         },

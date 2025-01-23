@@ -2,12 +2,11 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-export default new Schema({
+const accountSchema = new Schema({
   username: {
     type: String,
     required: true,
     trim: true,
-    // match: /^\w{2,500}$/,
     index: true,
   },
   nickName: {
@@ -67,3 +66,5 @@ export default new Schema({
     type: Number,
   },
 });
+
+export default accountSchema;

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-export default new Schema({
+const routeMatchSchema = new Schema({
   path: {
     type: String,
     required: true,
@@ -45,3 +45,5 @@ export default new Schema({
     type: Number,
   },
 });
+
+export default routeMatchSchema;
