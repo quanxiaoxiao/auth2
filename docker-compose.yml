@@ -10,6 +10,7 @@ services:
       - "./.env:/app/.env"
       - "./logger:/app/logger"
       - "./scripts:/app/scripts"
+      - "./src:/app/src"
       - "./node_modules:/app/node_modules"
 networks:
   quan:
