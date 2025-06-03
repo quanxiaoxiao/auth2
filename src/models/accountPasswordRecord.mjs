@@ -16,7 +16,6 @@ const accountPasswordRecordSchema = new Schema({
   },
   value: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
