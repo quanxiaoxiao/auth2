@@ -1,3 +1,5 @@
+import createError from 'http-errors';
+
 import logger from '../../logger.mjs';
 import {
   Account as AccountModel,
@@ -7,35 +9,39 @@ import {
 export default async (accountItem) => {
   const now = Date.now();
 
-  await Promise.all([
-    AccountModel.updateOne(
-      {
-        _id: accountItem._id,
-        invalid: {
-          $ne: true,
-        },
+  const result = await AccountModel.updateOne(
+    {
+      _id: accountItem._id,
+      invalid: {
+        $ne: true,
       },
-      {
-        $set: {
-          invalid: true,
-          dateTimeInvalid: now,
-        },
+    },
+    {
+      $set: {
+        invalid: true,
+        dateTimeInvalid: now,
       },
-    ),
-    SessionModel.updateMany(
-      {
-        account: accountItem._id,
-        invalid: {
-          $ne: true,
-        },
+    },
+  );
+
+  if (result.modifiedCount === 0) {
+    throw createError(404);
+  }
+
+  await SessionModel.updateMany(
+    {
+      account: accountItem._id,
+      invalid: {
+        $ne: true,
       },
-      {
-        $set: {
-          invalid: true,
-          dateTimeInvalid: now,
-        },
+    },
+    {
+      $set: {
+        invalid: true,
+        dateTimeInvalid: now,
       },
-    ),
-  ]);
+    },
+  );
+
   logger.warn(`\`account:${accountItem._id}\` remove`);
 };

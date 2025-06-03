@@ -61,5 +61,4 @@ process.on('uncaughtException', (error) => {
   console.error('boooooooom');
   console.error(error);
   logger.error(`boooooooom ${error.message}`);
-  process.exit(1);
 });
