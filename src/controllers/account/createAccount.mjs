@@ -4,7 +4,10 @@ import mongoose from 'mongoose';
 
 import { ACCOUNT_TYPE_MANUAL } from '../../constants.mjs';
 import logger from '../../logger.mjs';
-import { Account as AccountModel } from '../../models/index.mjs';
+import {
+  Account as AccountModel,
+  AccountPasswordRecord as AccountPasswordRecordModel,
+} from '../../models/index.mjs';
 import hmac from '../../providers/hmac.mjs';
 import getRouteMatchGroupById from '../routeMatchGroup/getRouteMatchGroupById.mjs';
 import getRouteMatchGroupsByDefaultWithSet from '../routeMatchGroup/getRouteMatchGroupsByDefaultWithSet.mjs';
@@ -56,7 +59,14 @@ export default async (input) => {
     accountItem.nickName = accountItem.username;
   }
 
-  await accountItem.save();
+  const accountPasswordRecord = new AccountPasswordRecordModel({
+    account: accountItem._id,
+    value: accountItem.password,
+  });
+  await Promise.all([
+    accountItem.save(),
+    accountPasswordRecord.save(),
+  ]);
   logger.warn(`createAccount \`${JSON.stringify(_.omit(input, ['password']))}\``);
   return accountItem;
 };

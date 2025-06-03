@@ -6,6 +6,7 @@ import _ from 'lodash';
 import logger from '../../logger.mjs';
 import {
   Account as AccountModel,
+  AccountPasswordRecord as AccountPasswordRecordModel,
   Session as SessionModel,
 } from '../../models/index.mjs';
 import hmac from '../../providers/hmac.mjs';
@@ -21,7 +22,6 @@ export default async (accountItem, input) => {
   if (Object.hasOwnProperty.call(data, 'password')) {
     assert(!!data.password);
     data.password = hmac(data.password);
-    data.dateTimeUpdateWithPassword = now;
   }
 
   if (data.routeMatchGroups) {
@@ -58,22 +58,29 @@ export default async (accountItem, input) => {
   }
 
   if (Object.hasOwnProperty.call(data, 'password')) {
-    await SessionModel.updateMany(
-      {
-        account: accountItem._id,
-        invalid: {
-          $ne: true,
+    const accountPasswordRecord = new AccountPasswordRecordModel({
+      account: accountItem._id,
+      value: accountItemNext.password,
+    });
+    await Promise.all([
+      accountPasswordRecord.save(),
+      SessionModel.updateMany(
+        {
+          account: accountItem._id,
+          invalid: {
+            $ne: true,
+          },
+          dateTimeExpired: {
+            $gt: now,
+          },
         },
-        dateTimeExpired: {
-          $gt: now,
+        {
+          $set: {
+            dateTimeExpired: now,
+          },
         },
-      },
-      {
-        $set: {
-          dateTimeExpired: now,
-        },
-      },
-    );
+      ),
+    ]);
   } else if (accountItemNext.dateTimeExpired != null) {
     if (accountItemNext.dateTimeExpired < now) {
       await SessionModel.updateMany(

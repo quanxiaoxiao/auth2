@@ -26,9 +26,6 @@ export default {
   dateTimeCreate: {
     type: 'number',
   },
-  dateTimeUpdateWithPassword: {
-    type: 'number',
-  },
   routeMatchGroups: {
     type: 'array',
     properties: ['.', { type: 'string' }],

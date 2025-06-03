@@ -13,6 +13,9 @@ const accountSchema = new Schema({
     type: String,
     default: '',
   },
+  disabled: {
+    type: Boolean,
+  },
   password: {
     type: String,
     index: true,
@@ -39,10 +42,6 @@ const accountSchema = new Schema({
   dateTimeUpdate: {
     type: Number,
     default: Date.now,
-  },
-  dateTimeUpdateWithPassword: {
-    type: Number,
-    default: null,
   },
   dateTimeExpired: {
     type: Number,

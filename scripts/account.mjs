@@ -146,16 +146,12 @@ const pipeline = async ({
     account: accountItem._id,
   });
 
-  const accountItemUpdateRet = await updateAccount({
+  await updateAccount({
     account: accountItem._id,
     data: {
       password: passwordNew,
     },
   });
-
-  assert(typeof accountItemUpdateRet.dateTimeUpdateWithPassword === 'number');
-  assert(Date.now() > accountItemUpdateRet.dateTimeUpdateWithPassword);
-  assert((Date.now() - 1000 * 5) < accountItemUpdateRet.dateTimeUpdateWithPassword);
 
   await testSessionUnableCreate({
     username,
