@@ -10,47 +10,51 @@ import getRouteMatchGroupById from '../routeMatchGroup/getRouteMatchGroupById.mj
 import getRouteMatchGroupsByDefaultWithSet from '../routeMatchGroup/getRouteMatchGroupsByDefaultWithSet.mjs';
 
 export default async (input) => {
-  const data = {
+  const accountItem = new AccountModel({
     ...input,
-    username: input.username.trim(),
+    username: input.username,
     password: input.password ? hmac(input.password) : null,
     type: input.type == null ? ACCOUNT_TYPE_MANUAL : input.type,
-  };
+  });
+
+  try {
+    await accountItem.validate();
+  } catch (error) {
+    throw createError(400, JSON.stringify(error.errors));
+  }
 
   const matched = await AccountModel.findOne({
-    username: data.username,
+    username: accountItem.username,
     invalid: {
       $ne: true,
     },
   });
 
   if (matched) {
-    logger.warn(`createAccount fail, username \`${data.username}\` alreay exist`);
-    throw createError(403, `username \`${data.username}\` alreay exist`);
+    logger.warn(`createAccount fail, username \`${accountItem.username}\` alreay exist`);
+    throw createError(403, `username \`${accountItem.username}\` alreay exist`);
   }
 
-  if (Object.hasOwnProperty.call(data, 'routeMatchGroups')) {
-    for (let i = 0; i < data.routeMatchGroups.length; i++) {
-      const routeMatchGroup = data.routeMatchGroups[i];
+  if (accountItem.routeMatchGroups) {
+    for (let i = 0; i < accountItem.routeMatchGroups.length; i++) {
+      const routeMatchGroup = accountItem.routeMatchGroups[i];
       if (!getRouteMatchGroupById(routeMatchGroup)) {
         logger.warn(`createAccount fail, routeMatchGroup \`${routeMatchGroup}\` is not exist`);
         throw createError(403);
       }
     }
-    if (data.routeMatchGroups.length !== Array.from(new Set(data.routeMatchGroups)).length) {
-      logger.warn(`createAccount fail, routeMatchGroups \`${data.routeMatchGroups}\` is repeat`);
+    if (accountItem.routeMatchGroups.length !== Array.from(new Set(accountItem.routeMatchGroups)).length) {
+      logger.warn(`createAccount fail, routeMatchGroups \`${accountItem.routeMatchGroups}\` is repeat`);
       throw createError(403);
     }
   } else {
     const routeMatchGroupList = getRouteMatchGroupsByDefaultWithSet();
-    data.routeMatchGroups = routeMatchGroupList.map((d) => new mongoose.Types.ObjectId(d._id));
+    accountItem.routeMatchGroups = routeMatchGroupList.map((d) => new mongoose.Types.ObjectId(d._id));
   }
 
-  if (!data.nickName) {
-    data.nickName = data.username;
+  if (!accountItem.nickName) {
+    accountItem.nickName = accountItem.username;
   }
-
-  const accountItem = new AccountModel(data);
 
   await accountItem.save();
   logger.warn(`createAccount \`${JSON.stringify(_.omit(input, ['password']))}\``);
