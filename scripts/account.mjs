@@ -1,17 +1,19 @@
 import assert from 'node:assert';
-import dayjs from 'dayjs';
+
 import { Semaphore } from '@quanxiaoxiao/utils';
+import dayjs from 'dayjs';
+
 import {
   createAccount,
-  updateAccount,
   createSession,
-  getSession,
-  updateSession,
-  getSessionValid,
-  getAccountByUsername,
-  removeAccount,
-  getAccountSessions,
   createSessionByAccount,
+  getAccountByUsername,
+  getAccountSessions,
+  getSession,
+  getSessionValid,
+  removeAccount,
+  updateAccount,
+  updateSession,
 } from './apis.mjs';
 
 const accountNull = await createAccount({

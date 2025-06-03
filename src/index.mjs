@@ -17,7 +17,7 @@ import queryRouteMatchGroups from './controllers/routeMatchGroup/queryRouteMatch
 import logger from './logger.mjs';
 import routes from './routes/index.mjs';
 import { selectRouteMatchList } from './store/selector.mjs';
-import { dispatch,getState } from './store/store.mjs'; // eslint-disable-line
+import { dispatch, getValue } from './store/store.mjs'; // eslint-disable-line
 
 process.nextTick(async () => {
   await connectMongo();
@@ -51,7 +51,7 @@ process.nextTick(async () => {
     }),
   }));
 
-  const { port } = getState().server;
+  const port = getValue('server.port');
   server.listen(port, () => {
     console.log(`server listen at \`${port}\``);
   });

@@ -3,7 +3,11 @@ import { createStore } from '@quanxiaoxiao/store';
 import attachCipher from './attachCipher.mjs';
 import initialState from './initialState.mjs';
 
-const { getState, dispatch } = createStore({
+const {
+  getState,
+  dispatch,
+  getValue,
+} = createStore({
   initialState: attachCipher(initialState)({
     secret: process.env.CIPHER_SECRET,
     algorithm: process.env.CIPHER_ALGORITHM,
@@ -34,4 +38,5 @@ const { getState, dispatch } = createStore({
 export {
   dispatch,
   getState,
+  getValue,
 };
